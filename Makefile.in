@@ -1,0 +1,15 @@
+all: build
+ 
+build:
+	echo "building..."
+
+test: test/hw
+	g++ -o test/hw test/hw.cpp
+	./test/hw
+
+clean:
+	rm -rf /test/hw
+
+clean-config:
+	rm -rf configure config.status  config.log autom4te.cache/ Makefile
+
