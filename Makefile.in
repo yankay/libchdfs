@@ -1,15 +1,20 @@
 all: build
  
-build:
-	echo "building..."
-
-test: test/hw
-	g++ -o test/hw test/hw.cpp
-	./test/hw
+build: libhadoop.so
+	g++ -shared -o libhadoop.so src/conf/Configuration.h src/conf/Configuration.cpp
 
 clean:
-	rm -rf /test/hw
+	rm -rf test/hw test/conf/ConfigurationTest
 
 clean-config:
 	rm -rf configure config.status  config.log autom4te.cache/ Makefile
 
+test: test-config
+
+test-hw: test/hw
+	g++ -o test/hw test/hw.cpp
+	./test/hw
+	
+test-config: test/conf/ConfigurationTest
+	g++ -o test/conf/ConfigurationTest src/conf/Configuration.h src/conf/Configuration.cpp test/conf/ConfigurationTest.cpp
+	./test/conf/ConfigurationTest

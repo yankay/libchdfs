@@ -30,6 +30,8 @@
 #include <time.h>
 #include <errno.h>
 
+#include "src/conf/Configuration.h"
+
 #ifndef O_RDONLY
 #define O_RDONLY 1
 #endif
