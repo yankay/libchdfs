@@ -2,6 +2,9 @@
 Makefile
 configure
 
+# log
+*.log
+
 # Compiled Object files
 *.slo
 *.lo
