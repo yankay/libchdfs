@@ -2,36 +2,48 @@ LIBHADOP_DIR = ..
 GTEST_DIR = /usr/local/src/gtest-1.6.0
 
 CXX = g++
-CPPFLAGS += 
-CXXFLAGS += -g -Wall -Wextra
-CPPTESTFLAGS += -I${GTEST_DIR}/include -pthread
+CXXFLAGS += 
+CXXTESTFLAGS += -I${GTEST_DIR}/include -pthread
 
+LIBGTEST = libgtest.a
 LTLIBRARIES = libhadoop.so
-HEADERS = src/conf/Configuration.h hadoop.h
-SOURCES = src/conf/Configuration.cc 
 MAKEFILE_CONFS = configure config.status config.log autom4te.cache/ Makefile
-TESTS = test/conf/ConfigurationTest.cc
+
+CONF_CLASS = conf/Configuration
+
+OBJECTS = src/$(CONF_CLASS).o
+SOURCES = $(OBJECTS:.o=.cc)
+HEADERS = $(OBJECTS:.o=.h)
+
+TESTS = test/$(CONF_CLASS)Test.cc
+
+
 
 all: $(LTLIBRARIES)
 
-$(LTLIBRARIES): $(SOURCES) 
-	$(CXX) -shared -o $(LTLIBRARIES) $(HEADERS) $(SOURCES)
+$(LTLIBRARIES):  $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -shared -o $@ $<
 
-clean: clean-config
-	rm -rf $(LTLIBRARIES)
-	rm -rf  *.log *.o *.a
-
-clean-config:
-	rm -rf $(MAKEFILE_CONFS)
+clean:
+	rm -rf  *.log *.a *.so
+	find . -name "*.o" | xargs rm -rf
+	find . -name "*.gch" | xargs rm -rf
 
 test: test.o
-
-test.o: test/test.cc libgtest.a $(TESTS) $(HEADERS) $(SOURCES)
-	g++ $(CPPTESTFLAGS) -o test.o  test/test.cc libgtest.a $(TESTS) $(HEADERS) $(SOURCES)
 	./test.o
+
+test.o: test/test.cc $(LIBGTEST) $(TESTS) $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $(CXXTESTFLAGS) -o $@ test/test.cc $(LIBGTEST) $(TESTS) $(OBJECTS)
 	
-libgtest.a:
-	g++ -I${GTEST_DIR}/include -I${GTEST_DIR} -c ${GTEST_DIR}/src/gtest-all.cc
-	ar -rv libgtest.a gtest-all.o 
+$(LIBGTEST):
+	$(CXX) -I${GTEST_DIR}/include -I${GTEST_DIR} -c ${GTEST_DIR}/src/gtest-all.cc
+	ar -rv  $@ gtest-all.o 
+	
+reMakefile: cleanMakefile
+	autoconf
+	./configure
+
+cleanMakefile:
+	rm -rf $(MAKEFILE_CONFS)
    	
-.PHONY : test clean
+.PHONY : all test clean reMakefile cleanMakefile
