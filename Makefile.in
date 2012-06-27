@@ -1,10 +1,10 @@
 all: build
  
-build: libhadoop.so
+build:
 	g++ -shared -o libhadoop.so src/conf/Configuration.h src/conf/Configuration.cpp
 
 clean:
-	rm -rf test/hw test/conf/ConfigurationTest
+	rm -rf test/hw test/conf/ConfigurationTest libhadoop.so
 
 clean-config:
 	rm -rf configure config.status  config.log autom4te.cache/ Makefile
@@ -15,6 +15,6 @@ test-hw: test/hw
 	g++ -o test/hw test/hw.cpp
 	./test/hw
 	
-test-config: test/conf/ConfigurationTest
-	g++ -o test/conf/ConfigurationTest src/conf/Configuration.h src/conf/Configuration.cpp test/conf/ConfigurationTest.cpp
+test-config: build
+	g++ -o libhadoop.so test/conf/ConfigurationTest.cpp
 	./test/conf/ConfigurationTest
