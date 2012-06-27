@@ -1,13 +1,21 @@
+CXX = g++
+CPPFLAGS = 
+lib_LTLIBRARIES = libhadoop.so
+libhadoop_so_SOURCES = src/conf/Configuration.h src/conf/Configuration.cpp hadoop.h
+makefile_CONFS = configure config.status config.log autom4te.cache/ Makefile
+
 all: build
  
-build:
-	g++ -shared -o libhadoop.so src/conf/Configuration.h src/conf/Configuration.cpp
+build: $(lib_LTLIBRARIES)
 
-clean:
-	rm -rf test/hw test/conf/ConfigurationTest libhadoop.so
+$(lib_LTLIBRARIES): $(libhadoop_so_SOURCES)
+	g++ -shared -o $(lib_LTLIBRARIES) $(libhadoop_so_SOURCES)
+
+clean: clean-config
+	rm -rf $(lib_LTLIBRARIES) *.log
 
 clean-config:
-	rm -rf configure config.status  config.log autom4te.cache/ Makefile
+	rm -rf $(makefile_CONFS)
 
 test: test-config
 
