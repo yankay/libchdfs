@@ -15,7 +15,7 @@ public:
 	virtual ~Configuration();
 	Configuration();
 	Configuration(const bool loadDefaults);
-
+	virtual int returnOne();
 };
 
 } /* namespace hadoop */

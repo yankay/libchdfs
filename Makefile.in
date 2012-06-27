@@ -1,28 +1,37 @@
+LIBHADOP_DIR = ..
+GTEST_DIR = /usr/local/src/gtest-1.6.0
+
 CXX = g++
-CPPFLAGS = 
-lib_LTLIBRARIES = libhadoop.so
-libhadoop_so_SOURCES = src/conf/Configuration.h src/conf/Configuration.cpp hadoop.h
-makefile_CONFS = configure config.status config.log autom4te.cache/ Makefile
+CPPFLAGS += 
+CXXFLAGS += -g -Wall -Wextra
+CPPTESTFLAGS += -I${GTEST_DIR}/include -pthread
 
-all: build
- 
-build: $(lib_LTLIBRARIES)
+LTLIBRARIES = libhadoop.so
+HEADERS = src/conf/Configuration.h hadoop.h
+SOURCES = src/conf/Configuration.cc 
+MAKEFILE_CONFS = configure config.status config.log autom4te.cache/ Makefile
+TESTS = test/conf/ConfigurationTest.cc
 
-$(lib_LTLIBRARIES): $(libhadoop_so_SOURCES)
-	g++ -shared -o $(lib_LTLIBRARIES) $(libhadoop_so_SOURCES)
+all: $(LTLIBRARIES)
+
+$(LTLIBRARIES): $(SOURCES) 
+	$(CXX) -shared -o $(LTLIBRARIES) $(HEADERS) $(SOURCES)
 
 clean: clean-config
-	rm -rf $(lib_LTLIBRARIES) *.log
+	rm -rf $(LTLIBRARIES)
+	rm -rf  *.log *.o
 
 clean-config:
-	rm -rf $(makefile_CONFS)
+	rm -rf $(MAKEFILE_CONFS)
 
-test: test-config
+test: test.o
 
-test-hw: test/hw
-	g++ -o test/hw test/hw.cpp
-	./test/hw
+test.o: test/test.cc libgtest.a $(TESTS) $(HEADERS) $(SOURCES)
+	g++ $(CPPTESTFLAGS) -o test.o  test/test.cc libgtest.a $(TESTS) $(HEADERS) $(SOURCES)
+	./test.o
 	
-test-config: build
-	g++ -o libhadoop.so test/conf/ConfigurationTest.cpp
-	./test/conf/ConfigurationTest
+libgtest.a:
+	g++ -I${GTEST_DIR}/include -I${GTEST_DIR} -c ${GTEST_DIR}/src/gtest-all.cc
+	ar -rv libgtest.a gtest-all.o 
+   	
+.PHONY : test clean
