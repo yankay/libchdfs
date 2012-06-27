@@ -1,6 +1,8 @@
 # Makefile
 Makefile
 configure
+.project
+.cproject
 
 # log
 *.log
