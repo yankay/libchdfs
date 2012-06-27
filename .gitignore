@@ -1,3 +1,7 @@
+# Makefile
+Makefile
+configure
+
 # Compiled Object files
 *.slo
 *.lo
