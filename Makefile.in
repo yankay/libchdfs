@@ -19,7 +19,7 @@ $(LTLIBRARIES): $(SOURCES)
 
 clean: clean-config
 	rm -rf $(LTLIBRARIES)
-	rm -rf  *.log *.o
+	rm -rf  *.log *.o *.a
 
 clean-config:
 	rm -rf $(MAKEFILE_CONFS)
