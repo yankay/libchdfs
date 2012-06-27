@@ -16,13 +16,12 @@ SOURCES = $(OBJECTS:.o=.cc)
 HEADERS = $(OBJECTS:.o=.h)
 
 TESTS = test/$(CONF_CLASS)Test.cc
-
-
+TEST_MAIN = test/test.cc
 
 all: $(LTLIBRARIES)
 
 $(LTLIBRARIES):  $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -shared -o $@ $<
+	$(CXX) $(CXXFLAGS) -shared -o $@ $?
 
 clean:
 	rm -rf  *.log *.a *.so
@@ -32,8 +31,8 @@ clean:
 test: test.o
 	./test.o
 
-test.o: test/test.cc $(LIBGTEST) $(TESTS) $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $(CXXTESTFLAGS) -o $@ test/test.cc $(LIBGTEST) $(TESTS) $(OBJECTS)
+test.o: $(TEST_MAIN) $(LIBGTEST) $(TESTS) $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $(CXXTESTFLAGS) -o $@ $?
 	
 $(LIBGTEST):
 	$(CXX) -I${GTEST_DIR}/include -I${GTEST_DIR} -c ${GTEST_DIR}/src/gtest-all.cc
