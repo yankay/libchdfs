@@ -23,6 +23,9 @@ all: $(LTLIBRARIES)
 $(LTLIBRARIES):  $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -shared -o $@ $?
 
+$(OBJECTS): %.o: %.cc $(HEADERS) 
+	$(CXX) -c $(CXXFLAGS) -o $@ $<
+
 clean:
 	rm -rf  *.log *.a *.so
 	find . -name "*.o" | xargs rm -rf
