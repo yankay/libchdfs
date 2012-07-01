@@ -43,11 +43,11 @@ public:
 	bool getBoolean(const std::string& name, const bool defaultValue);
 	void setBoolean(const std::string& name, const bool value);
 	void setBooleanIfUnset(const std::string& name, bool value);
-	std::vector<std::string> getStrings(const std::string& name);
-	std::vector<std::string> getTrimmeds(const std::string& name);
+	std::vector<std::string> getStringCollection(const std::string& name);
+	std::vector<std::string> getTrimmedStringCollection(const std::string& name);
 	void setStrings(const std::string& name,
 			const std::vector<std::string>& values);
-	int size();
+	int32_t size();
 	void clear();
 // Iterator<Map.Entry<String, String>> iterator() ;
 //	std::string substituteVars(const std::string& expr);

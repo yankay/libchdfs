@@ -22,8 +22,7 @@ public:
 
 	static std::string trim(const std::string &str) {
 		std::string result;
-		std::stringstream trimmer;
-		trimmer << str;
+		std::istringstream trimmer(str);
 		trimmer >> result;
 		return result;
 	}
@@ -48,6 +47,28 @@ public:
 			values.push_back(str.substr(begin, str.length() - begin));
 		}
 		return values;
+	}
+
+	static std::vector<std::string> getTrimmedStringCollection(
+			const std::string& str) {
+		std::vector < std::string > values;
+		std::istringstream ss(str);
+		while (!ss.eof()) {
+			std::string result;
+			ss >> result;
+			values.push_back(result);
+		}
+		return values;
+	}
+
+	static std::string arrayToString(const std::vector<std::string>& strs) {
+		std::stringstream ss;
+		std::string sep = "";
+		for (int i = 0; i < strs.size(); ++i) {
+			ss << sep << strs[i];
+			sep = ",";
+		}
+		return ss.str();
 	}
 
 private:

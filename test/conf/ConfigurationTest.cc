@@ -44,13 +44,40 @@ TEST(Configure, SETSTRINGS) {
 	conf.set("key1","1,2,3");
 	std::stringstream ss;
 	std::string value;
-	std::vector<std::string> v=conf.getStrings("key1");
+	std::vector<std::string> v=conf.getStringCollection("key1");
 	for (size_t i = 0; i < v.size(); ++i) {
 		ss << v[i];
 	}
 	ss >> value;
 	EXPECT_EQ("123",value);
 }
+
+
+TEST(Configure, SETTREAM) {
+	hadoop::Configuration conf;
+	conf.set("key1"," 1 2 3 ");
+	std::stringstream ss;
+	std::string value;
+	std::vector<std::string> v=conf.getTrimmedStringCollection("key1");
+	for (size_t i = 0; i < v.size(); ++i) {
+		ss << v[i];
+	}
+	ss >> value;
+	EXPECT_EQ("123",value);
+}
+
+
+TEST(Configure, SETSTRINGS2) {
+	hadoop::Configuration conf;
+	std::vector<std::string> s;
+	s.push_back("1");
+	s.push_back("2");
+	s.push_back("3");
+	conf.setStrings("key1",s);
+	EXPECT_EQ("1,2,3",conf.get("key1",""));
+	EXPECT_EQ(s,conf.getStringCollection("key1"));
+}
+
 
 //TEST(Configure,substituteVars){
 //	hadoop::Configuration conf;

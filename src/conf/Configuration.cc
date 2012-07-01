@@ -152,13 +152,26 @@ void Configuration::setBooleanIfUnset(const std::string& name, bool value) {
 	}
 }
 
-std::vector<std::string> Configuration::getStrings(const std::string& name) {
+std::vector<std::string> Configuration::getStringCollection(const std::string& name) {
 	std::string valueString = get(name);
-	return libhadoop::StringUtils::getStrings(valueString);
+	return libhadoop::StringUtils::getStringCollection(valueString);
 }
 
-std::vector<std::string> Configuration::getTrimmeds(const std::string& name) {
+std::vector<std::string> Configuration::getTrimmedStringCollection(const std::string& name) {
+	std::string valueString = get(name);
+	return libhadoop::StringUtils::getTrimmedStringCollection(valueString);
+}
 
+void Configuration::setStrings(const std::string& name,
+		const std::vector<std::string>& values){
+    set(name, libhadoop::StringUtils::arrayToString(values));
+}
+
+int32_t Configuration::size(){
+	return properties.size();
+}
+void Configuration::clear(){
+	properties.clear();
 }
 
 } /* namespace hadoop */
