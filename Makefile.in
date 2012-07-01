@@ -2,7 +2,7 @@ LIBHADOP_DIR = ..
 GTEST_DIR = /usr/local/src/gtest-1.6.0
 
 CXX = g++
-CXXFLAGS += 
+CXXFLAGS += -Isrc
 CXXTESTFLAGS += -I${GTEST_DIR}/include -pthread
 
 LIBGTEST = libgtest.a
@@ -10,8 +10,9 @@ LTLIBRARIES = libhadoop.so
 MAKEFILE_CONFS = configure config.status config.log autom4te.cache/ Makefile
 
 CONF_CLASS = conf/Configuration
+STRING_UTILS_CLASS = util/StringUtils
 
-OBJECTS = src/$(CONF_CLASS).o
+OBJECTS = src/$(CONF_CLASS).o src/$(STRING_UTILS_CLASS).o
 SOURCES = $(OBJECTS:.o=.cc)
 HEADERS = $(OBJECTS:.o=.h)
 
@@ -25,7 +26,7 @@ $(LTLIBRARIES):  $(OBJECTS)
 
 $(OBJECTS): %.o: %.cc $(HEADERS) 
 	$(CXX) -c $(CXXFLAGS) -o $@ $<
-
+	
 clean:
 	rm -rf  *.log *.a *.so
 	find . -name "*.o" | xargs rm -rf

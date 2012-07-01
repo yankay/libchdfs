@@ -15,7 +15,9 @@
 #include <iostream>
 #include <assert.h>
 #include <stdlib.h>
+#include <sstream>
 
+#include <util/StringUtils.h>
 
 namespace hadoop {
 
@@ -27,14 +29,14 @@ public:
 	std::string get(const std::string& name);
 	std::string getTrimmed(const std::string& name);
 	std::string getRaw(const std::string& name);
-
 	void set(const std::string& name, const std::string& value);
 	void unset(const std::string& name);
 	void setIfUnset(const std::string& name, const std::string& value);
 	std::string get(const std::string& name, const std::string& defaultValue);
-	int getInt(const std::string& name, const int32_t defaultValue);
+
+	int32_t getInt(const std::string& name, const int32_t defaultValue);
 	void setInt(const std::string& name, const int32_t value);
-	long getLong(const std::string& name, const int64_t defaultValue);
+	int64_t getLong(const std::string& name, const int64_t defaultValue);
 	void setLong(const std::string& name, const int64_t value);
 	float getFloat(const std::string& name, const float defaultValue);
 	void setFloat(const std::string& name, const float value);
@@ -48,11 +50,13 @@ public:
 	int size();
 	void clear();
 // Iterator<Map.Entry<String, String>> iterator() ;
-	std::string substituteVars(const std::string& expr);
+//	std::string substituteVars(const std::string& expr);
 
 private:
 	std::map<std::string, std::string> properties;
-//	std::string substituteVars(const std::string& expr);
+	std::string substituteVars(const std::string& expr);
+	std::string getHexDigits(const std::string& exper);
+
 };
 
 } /* namespace hadoop */
