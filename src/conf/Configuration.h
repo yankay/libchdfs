@@ -19,20 +19,20 @@
 
 #include <util/StringUtils.h>
 
-namespace hadoop {
+namespace libhadoop {
 
 class Configuration {
 public:
 	virtual ~Configuration();
 	Configuration();
 
-	std::string get(const std::string& name);
+	std::string get(const std::string& name) const;
 	std::string getTrimmed(const std::string& name);
 	std::string getRaw(const std::string& name);
 	void set(const std::string& name, const std::string& value);
 	void unset(const std::string& name);
 	void setIfUnset(const std::string& name, const std::string& value);
-	std::string get(const std::string& name, const std::string& defaultValue);
+	std::string get(const std::string& name, const std::string& defaultValue) const;
 
 	int32_t getInt(const std::string& name, const int32_t defaultValue);
 	void setInt(const std::string& name, const int32_t value);
@@ -54,10 +54,10 @@ public:
 
 private:
 	std::map<std::string, std::string> properties;
-	std::string substituteVars(const std::string& expr);
+	std::string substituteVars(const std::string& expr) const;
 	std::string getHexDigits(const std::string& exper);
 
 };
 
-} /* namespace hadoop */
+} /* namespace libhadoop */
 #endif /* CONFIGURATION_H_ */

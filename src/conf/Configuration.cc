@@ -7,7 +7,7 @@
 
 #include "Configuration.h"
 
-namespace hadoop {
+namespace libhadoop {
 
 Configuration::~Configuration() {
 }
@@ -16,13 +16,14 @@ Configuration::Configuration() {
 }
 
 //TODO with replace ${ENV}
-std::string Configuration::substituteVars(const std::string& expr) {
+std::string Configuration::substituteVars(const std::string& expr) const {
+//	std::cout << expr << std::endl;
 	if (expr.empty())
 		return expr;
 	std::string result(expr);
 	size_t b, e = 0;
-	while (std::string::npos != (b = result.find("${", 0)) && std::string::npos != (e =
-			result.find("}", b))) {
+	while (std::string::npos != (b = result.find("${", 0))
+			&& std::string::npos != (e = result.find("}", b))) {
 //		std::cout << b << "," << e << std::endl;
 		std::string var = result.substr(b + 2, e - b - 2);
 //		std::cout << var << std::endl;
@@ -33,8 +34,10 @@ std::string Configuration::substituteVars(const std::string& expr) {
 	return result;
 }
 
-std::string Configuration::get(const std::string& name) {
-	return substituteVars(properties[name]);
+std::string Configuration::get(const std::string& name) const {
+	if (properties.end() == properties.find(name))
+		return "";
+	return substituteVars(properties.find(name)->second);
 }
 
 std::string Configuration::getTrimmed(const std::string& name) {
@@ -61,7 +64,7 @@ void Configuration::setIfUnset(const std::string& name,
 }
 
 std::string Configuration::get(const std::string& name,
-		const std::string& defaultValue) {
+		const std::string& defaultValue) const {
 	std::string value(get(name));
 	if (value.empty())
 		value = defaultValue;
@@ -152,26 +155,28 @@ void Configuration::setBooleanIfUnset(const std::string& name, bool value) {
 	}
 }
 
-std::vector<std::string> Configuration::getStringCollection(const std::string& name) {
+std::vector<std::string> Configuration::getStringCollection(
+		const std::string& name) {
 	std::string valueString = get(name);
 	return libhadoop::StringUtils::getStringCollection(valueString);
 }
 
-std::vector<std::string> Configuration::getTrimmedStringCollection(const std::string& name) {
+std::vector<std::string> Configuration::getTrimmedStringCollection(
+		const std::string& name) {
 	std::string valueString = get(name);
 	return libhadoop::StringUtils::getTrimmedStringCollection(valueString);
 }
 
 void Configuration::setStrings(const std::string& name,
-		const std::vector<std::string>& values){
-    set(name, libhadoop::StringUtils::arrayToString(values));
+		const std::vector<std::string>& values) {
+	set(name, libhadoop::StringUtils::arrayToString(values));
 }
 
-int32_t Configuration::size(){
+int32_t Configuration::size() {
 	return properties.size();
 }
-void Configuration::clear(){
+void Configuration::clear() {
 	properties.clear();
 }
 
-} /* namespace hadoop */
+} /* namespace libhadoop */

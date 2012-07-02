@@ -8,16 +8,35 @@
 #ifndef DFSCLIENT_H_
 #define DFSCLIENT_H_
 
-namespace hadoop {
+#include "conf/Configuration.h"
+#include "net/InetSocketAddress.h"
+#include "fs/FileSystem.h"
+#include "hdfs/protocol/ClientProtocol.h"
+
+namespace libhadoop {
 
 class DFSClient {
 public:
-	DFSClient();
+	DFSClient(const libhadoop::Configuration& conf);
+
+	DFSClient(const libhadoop::InetSocketAddress& nameNodeAddr,
+			const libhadoop::Configuration& conf);
+
+	DFSClient(const libhadoop::InetSocketAddress& nameNodeAddr,
+			const libhadoop::Configuration& conf,
+			const libhadoop::FileSystemStatistics& stats);
+
 	virtual ~DFSClient();
 
 private:
+	DFSClient();
+
+	void init(const libhadoop::InetSocketAddress& nameNodeAddr,
+			const libhadoop::ClientProtocol& rpcNamenode,
+			const libhadoop::Configuration& conf,
+			const libhadoop::FileSystemStatistics& stats);
 
 };
 
-} /* namespace hadoop */
+} /* namespace libhadoop */
 #endif /* DFSCLIENT_H_ */

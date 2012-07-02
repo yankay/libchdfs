@@ -16,7 +16,7 @@
 # define INT32_MAX		(2147483647)
 
 TEST(Configure, SETTRIM) {
-	hadoop::Configuration conf;
+	libhadoop::Configuration conf;
 	conf.set("key1"," value1 ");
 	conf.set("key2","value2");
 	EXPECT_EQ("value2",conf.get("key2"));
@@ -24,7 +24,7 @@ TEST(Configure, SETTRIM) {
 }
 
 TEST(Configure, SETINT) {
-	hadoop::Configuration conf;
+	libhadoop::Configuration conf;
 	conf.setInt("key1",100);
 	conf.setInt("key2",-100);
 	EXPECT_EQ(100,conf.getInt("key1",0));
@@ -32,7 +32,7 @@ TEST(Configure, SETINT) {
 }
 
 TEST(Configure, SETLONG) {
-	hadoop::Configuration conf;
+	libhadoop::Configuration conf;
 	conf.setLong("key1",(int64_t)INT32_MAX+1);
 	conf.setLong("key2",(int64_t)INT32_MIN-1);
 	EXPECT_EQ((int64_t)INT32_MAX+1,conf.getLong("key1",0));
@@ -40,7 +40,7 @@ TEST(Configure, SETLONG) {
 }
 
 TEST(Configure, SETSTRINGS) {
-	hadoop::Configuration conf;
+	libhadoop::Configuration conf;
 	conf.set("key1","1,2,3");
 	std::stringstream ss;
 	std::string value;
@@ -54,7 +54,7 @@ TEST(Configure, SETSTRINGS) {
 
 
 TEST(Configure, SETTREAM) {
-	hadoop::Configuration conf;
+	libhadoop::Configuration conf;
 	conf.set("key1"," 1 2 3 ");
 	std::stringstream ss;
 	std::string value;
@@ -68,7 +68,7 @@ TEST(Configure, SETTREAM) {
 
 
 TEST(Configure, SETSTRINGS2) {
-	hadoop::Configuration conf;
+	libhadoop::Configuration conf;
 	std::vector<std::string> s;
 	s.push_back("1");
 	s.push_back("2");
@@ -80,7 +80,7 @@ TEST(Configure, SETSTRINGS2) {
 
 
 //TEST(Configure,substituteVars){
-//	hadoop::Configuration conf;
+//	libhadoop::Configuration conf;
 //	std::string result(conf.substituteVars("${USER} use ${LANG}"));
 //	std::cout << result << std::endl;
 //	EXPECT_EQ("yankai use en_US.UTF-8",result);

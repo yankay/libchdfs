@@ -7,13 +7,31 @@
 
 #include "DFSClient.h"
 
-namespace hadoop {
+namespace libhadoop {
 
-DFSClient::DFSClient() {
+DFSClient::DFSClient(const libhadoop::Configuration& conf) {
+//	this(NameNode.getAddress(conf), conf);
+}
+
+DFSClient::DFSClient(const libhadoop::InetSocketAddress& nameNodeAddr,
+		const libhadoop::Configuration& conf) {
+//	this(nameNodeAddr, conf, null);
+}
+
+DFSClient::DFSClient(const libhadoop::InetSocketAddress& nameNodeAddr,
+		const libhadoop::Configuration& conf,
+		const libhadoop::FileSystemStatistics& stats) {
+//	this(nameNodeAddr, null, conf, stats);
+}
+
+void init(const libhadoop::InetSocketAddress& nameNodeAddr,
+		const libhadoop::ClientProtocol& rpcNamenode,
+		const libhadoop::Configuration& conf,
+		const libhadoop::FileSystemStatistics& stats) {
 
 }
 
 DFSClient::~DFSClient() {
 }
 
-} /* namespace hadoop */
+} /* namespace libhadoop */
