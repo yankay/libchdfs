@@ -9,18 +9,11 @@
 
 namespace libhadoop {
 
-NameNode::NameNode() {
-	// TODO Auto-generated constructor stub
-
-}
-
-NameNode::~NameNode() {
-	// TODO Auto-generated destructor stub
-}
-
-libhadoop::InetSocketAddress NameNode::getAddress(
-		const libhadoop::Configuration& conf) {
-	libhadoop::URI filesystemURI = libhadoop::FileSystem::getDefaultUri(conf);
+InetSocketAddress NameNode::getAddress(const Configuration& conf) {
+	URI filesystemURI = FileSystem::getDefaultUri(conf);
+	//TODO
+	InetSocketAddress address;
+	return address;
 }
 
 } /* namespace libhadoop */

@@ -17,24 +17,24 @@ namespace libhadoop {
 
 class DFSClient {
 public:
-	DFSClient(const libhadoop::Configuration& conf);
+	DFSClient(const Configuration& conf);
 
-	DFSClient(const libhadoop::InetSocketAddress& nameNodeAddr,
-			const libhadoop::Configuration& conf);
+	DFSClient(const InetSocketAddress& nameNodeAddr,
+			const Configuration& conf);
 
-	DFSClient(const libhadoop::InetSocketAddress& nameNodeAddr,
-			const libhadoop::Configuration& conf,
-			const libhadoop::FileSystemStatistics& stats);
+	DFSClient(const InetSocketAddress& nameNodeAddr,
+			const Configuration& conf,
+			const FileSystemStatistics& stats);
 
 	virtual ~DFSClient();
 
 private:
 	DFSClient();
 
-	void init(const libhadoop::InetSocketAddress& nameNodeAddr,
-			const libhadoop::ClientProtocol& rpcNamenode,
-			const libhadoop::Configuration& conf,
-			const libhadoop::FileSystemStatistics& stats);
+	void init(const InetSocketAddress& nameNodeAddr,
+			const ClientProtocol& rpcNamenode,
+			const Configuration& conf,
+			const FileSystemStatistics& stats);
 
 };
 

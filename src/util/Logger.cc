@@ -8,18 +8,8 @@
 #include "Logger.h"
 
 namespace libhadoop {
-
-Logger::Logger() {
-	// TODO Auto-generated constructor stub
-
-}
-
-Logger::~Logger() {
-	// TODO Auto-generated destructor stub
-}
-
-void Logger::warn(const std::string& msg) const {
-	std::cout << "warn::" << msg << std::endl;
+LoggerPtr::LoggerPtr(const std::string& name) :
+		name(name) {
 }
 
 } /* namespace libhadoop */

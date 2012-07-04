@@ -17,9 +17,6 @@ namespace libhadoop {
 
 class StringUtils {
 public:
-	StringUtils();
-	virtual ~StringUtils();
-
 	static std::string trim(const std::string &str) {
 		std::string result;
 		std::istringstream trimmer(str);
@@ -28,7 +25,8 @@ public:
 	}
 
 	static std::vector<std::string> getStrings(const std::string& str) {
-		return getStringCollection(str);;
+		std::vector < std::string > v(getStringCollection(str));
+		return v;
 	}
 
 	static std::vector<std::string> getStringCollection(
@@ -64,7 +62,7 @@ public:
 	static std::string arrayToString(const std::vector<std::string>& strs) {
 		std::stringstream ss;
 		std::string sep = "";
-		for (int i = 0; i < strs.size(); ++i) {
+		for (size_t i = 0; i < strs.size(); ++i) {
 			ss << sep << strs[i];
 			sep = ",";
 		}

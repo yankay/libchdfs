@@ -29,5 +29,10 @@ TEST(FileSystem, GETDEFAULTURI) {
 	conf.set("fs.default.name","master:9000");
 	uri=libhadoop::FileSystem::getDefaultUri(conf);
 	EXPECT_EQ("hdfs://master:9000",uri.toString());
+
+
+	conf.set("fs.default.name","hdfs://master:abcd");
+	uri=libhadoop::FileSystem::getDefaultUri(conf);
+	EXPECT_EQ("hdfs://master",uri.toString());
 }
 

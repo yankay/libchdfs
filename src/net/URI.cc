@@ -9,12 +9,16 @@
 
 namespace libhadoop {
 
-URI::URI() :
-		port(-1) {
+URI::URI() {
+	init("");
 }
 
-URI::URI(const std::string& str) :
-		port(-1) {
+URI::URI(const std::string& str) {
+	init(str);
+}
+
+void URI::init(const std::string& str) {
+	port = -1;
 	size_t p = str.find("://");
 	if (std::string::npos == p)
 		return;
@@ -35,15 +39,13 @@ URI::URI(const std::string& str) :
 			host = str.substr(p + 3, m - p - 3);
 			std::stringstream ss(str.substr(m + 1, l - m - 1));
 			ss >> port;
+			std::cout << port << std::endl;
 			path = str.substr(l);
 		} else {
 			host = str.substr(p + 3, l - p - 3);
 			path = str.substr(l);
 		}
 	}
-}
-
-URI::~URI() {
 }
 
 std::string URI::toString() {

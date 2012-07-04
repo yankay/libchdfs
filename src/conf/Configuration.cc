@@ -9,12 +9,6 @@
 
 namespace libhadoop {
 
-Configuration::~Configuration() {
-}
-
-Configuration::Configuration() {
-}
-
 //TODO with replace ${ENV}
 std::string Configuration::substituteVars(const std::string& expr) const {
 //	std::cout << expr << std::endl;
@@ -42,7 +36,7 @@ std::string Configuration::get(const std::string& name) const {
 
 std::string Configuration::getTrimmed(const std::string& name) {
 	std::string value = get(name);
-	return libhadoop::StringUtils::trim(value);
+	return StringUtils::trim(value);
 }
 
 std::string Configuration::getRaw(const std::string& name) {
@@ -158,18 +152,18 @@ void Configuration::setBooleanIfUnset(const std::string& name, bool value) {
 std::vector<std::string> Configuration::getStringCollection(
 		const std::string& name) {
 	std::string valueString = get(name);
-	return libhadoop::StringUtils::getStringCollection(valueString);
+	return StringUtils::getStringCollection(valueString);
 }
 
 std::vector<std::string> Configuration::getTrimmedStringCollection(
 		const std::string& name) {
 	std::string valueString = get(name);
-	return libhadoop::StringUtils::getTrimmedStringCollection(valueString);
+	return StringUtils::getTrimmedStringCollection(valueString);
 }
 
 void Configuration::setStrings(const std::string& name,
 		const std::vector<std::string>& values) {
-	set(name, libhadoop::StringUtils::arrayToString(values));
+	set(name, StringUtils::arrayToString(values));
 }
 
 int32_t Configuration::size() {

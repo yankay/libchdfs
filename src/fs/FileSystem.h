@@ -20,10 +20,10 @@ class FileSystem {
 public:
 	const static std::string FS_DEFAULT_NAME_KEY;
 
-	static libhadoop::URI getDefaultUri(const libhadoop::Configuration& conf);
+	static URI getDefaultUri(const Configuration& conf);
 
 private:
-	const static libhadoop::Logger LOG;
+	static LoggerPtr LOG;
 
 	static std::string fixName(const std::string& name);
 

@@ -23,9 +23,6 @@ namespace libhadoop {
 
 class Configuration {
 public:
-	virtual ~Configuration();
-	Configuration();
-
 	std::string get(const std::string& name) const;
 	std::string getTrimmed(const std::string& name);
 	std::string getRaw(const std::string& name);

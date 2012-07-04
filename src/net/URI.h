@@ -11,6 +11,7 @@
 #include <string>
 #include <sstream>
 #include <stdlib.h>
+#include <iostream>
 
 namespace libhadoop {
 
@@ -19,8 +20,6 @@ public:
 	URI();
 	URI(const std::string& str);
 
-	virtual ~URI();
-
 	std::string toString();
 
 	static URI create(const std::string& str) {
@@ -28,12 +27,13 @@ public:
 		return uri;
 	}
 
-
 private:
 	std::string schema;
 	std::string host;
 	int32_t port;
 	std::string path;
+
+	void init(const std::string& str);
 };
 
 } /* namespace libhadoop */

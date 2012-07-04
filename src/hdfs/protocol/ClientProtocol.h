@@ -11,9 +11,6 @@
 namespace libhadoop {
 
 class ClientProtocol {
-public:
-	ClientProtocol();
-	virtual ~ClientProtocol();
 };
 
 } /* namespace libhadoop */

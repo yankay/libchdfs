@@ -17,11 +17,8 @@ namespace libhadoop {
 
 class NameNode {
 public:
-	NameNode();
-	virtual ~NameNode();
-
-	static libhadoop::InetSocketAddress getAddress(const libhadoop::Configuration& conf);
-
+	static libhadoop::InetSocketAddress getAddress(
+			const libhadoop::Configuration& conf);
 };
 
 } /* namespace libhadoop */

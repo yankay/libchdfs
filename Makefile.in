@@ -2,7 +2,7 @@ LIBHADOP_DIR = ..
 GTEST_DIR = /usr/local/src/gtest-1.6.0
 
 CXX = g++
-CXXFLAGS += -Isrc
+CXXFLAGS += -Isrc -Wall
 CXXTESTFLAGS += -I${GTEST_DIR}/include -pthread
 
 LIBGTEST = libgtest.a
