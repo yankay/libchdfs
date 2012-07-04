@@ -10,7 +10,7 @@
 namespace libhadoop {
 
 const std::string FileSystem::FS_DEFAULT_NAME_KEY("fs.default.name");
-LoggerPtr FileSystem::LOG(Logger::getLogger("FileSystem"));
+const std::string FileSystem::LOG_NAME("FileSystem");
 
 libhadoop::URI FileSystem::getDefaultUri(const libhadoop::Configuration& conf) {
 //	std::cout << FS_DEFAULT_NAME_KEY << std::endl;
@@ -21,11 +21,11 @@ libhadoop::URI FileSystem::getDefaultUri(const libhadoop::Configuration& conf) {
 std::string FileSystem::fixName(const std::string& name) {
 	std::stringstream fixed;
 	if (name == "local") {
-		LOG_WARN(LOG,
+		LOG_WARN(LOG_NAME,
 				"\"local\" is a deprecated filesystem name." << " Use \"file:///\" instead.");
 		fixed << "file:///";
 	} else if (std::string::npos == name.find("/")) {
-		LOG_WARN(LOG,
+		LOG_WARN(LOG_NAME,
 				"\"" << name << "\" is a deprecated filesystem name." << " Use \"hdfs://" << name << "/\" instead.");
 		fixed << "hdfs://" << name;
 	} else {

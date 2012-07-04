@@ -12,34 +12,9 @@
 #include <iostream>
 #include <ostream>
 
-namespace libhadoop {
 
-class LoggerPtr {
-public:
-	const std::string name;
-	std::ostream* os;
-
-	LoggerPtr(const std::string& name);
-
-};
-
-class Logger {
-public:
-// Creation & retrieval methods:
-	static LoggerPtr getRootLogger() {
-		return getLogger("");
-	}
-
-	static LoggerPtr getLogger(const std::string& name) {
-		LoggerPtr logger(name);
-		logger.os = &std::cout;
-		return logger;
-	}
-
-};
-
-} /* namespace libhadoop */
-//WARNING [name]:  fdasfdas
-#define LOG_WARN(logger, expression) *(logger.os) << "WARNING [" << logger.name << "]: " << expression<< std::endl
+#define LOG_OS std::cout
+#define LOG_WARN(name, expression) std::cout << "WARNING [" << name << "]: " << expression << std::endl
+#define LOG_ERROR(name, expression) std::cout << "ERROR [" << name << "]: " << expression << std::endl
 
 #endif /* LOGGER_H_ */

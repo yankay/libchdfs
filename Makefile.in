@@ -12,8 +12,10 @@ MAKEFILE_CONFS = configure config.status config.log autom4te.cache/ Makefile
 CONF_CLASS = conf/Configuration
 FILESYSTEM_CLASS = fs/FileSystem
 CLIENTPROTOCOL_CLASS = hdfs/protocol/ClientProtocol
+FSCONSTANTSL_CLASS = hdfs/protocol/FSConstants
 DFSCLIENT_CLASS = hdfs/DFSClient
 INETSOCKETADDRESS_CLASS = net/InetSocketAddress
+NETUTILS_CLASS = net/NetUtils
 URI_CLASS = net/URI
 NAMENODE_CLASS = server/namenode/NameNode
 LOGGER_CLASS = util/Logger
@@ -21,14 +23,14 @@ STRING_UTILS_CLASS = util/StringUtils
 
 OBJECTS = src/$(CONF_CLASS).o \
 src/$(FILESYSTEM_CLASS).o \
-src/$(CLIENTPROTOCOL_CLASS).o src/$(DFSCLIENT_CLASS).o \
-src/$(INETSOCKETADDRESS_CLASS).o src/$(URI_CLASS).o \
+src/$(CLIENTPROTOCOL_CLASS).o src/$(FSCONSTANTSL_CLASS).o src/$(DFSCLIENT_CLASS).o \
+src/$(INETSOCKETADDRESS_CLASS).o src/$(NETUTILS_CLASS).o src/$(URI_CLASS).o \
 src/$(NAMENODE_CLASS).o \
 src/$(LOGGER_CLASS).o src/$(STRING_UTILS_CLASS).o
 SOURCES = $(OBJECTS:.o=.cc)
 HEADERS = $(OBJECTS:.o=.h)
 
-TESTS = test/$(CONF_CLASS)Test.cc test/$(FILESYSTEM_CLASS)Test.cc 
+TESTS = test/$(CONF_CLASS)Test.cc test/$(FILESYSTEM_CLASS)Test.cc  test/$(NAMENODE_CLASS)Test.cc
 TEST_MAIN = test/test.cc
 
 all: $(LTLIBRARIES)

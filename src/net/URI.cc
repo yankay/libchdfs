@@ -48,6 +48,19 @@ void URI::init(const std::string& str) {
 	}
 }
 
+std::string URI::getAuthority() {
+	return host;
+}
+std::string URI::getScheme() {
+	return schema;
+}
+std::string URI::getHost() {
+	return host;
+}
+int32_t URI::getPort() {
+	return port;
+}
+
 std::string URI::toString() {
 	std::stringstream ss;
 	ss << schema << "://" << host;

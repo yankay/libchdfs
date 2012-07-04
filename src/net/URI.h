@@ -19,7 +19,10 @@ class URI {
 public:
 	URI();
 	URI(const std::string& str);
-
+	std::string getAuthority();
+	std::string getScheme();
+	std::string getHost();
+	int32_t getPort();
 	std::string toString();
 
 	static URI create(const std::string& str) {

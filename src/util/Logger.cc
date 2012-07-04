@@ -8,9 +8,6 @@
 #include "Logger.h"
 
 namespace libhadoop {
-LoggerPtr::LoggerPtr(const std::string& name) :
-		name(name) {
-}
 
 } /* namespace libhadoop */
 

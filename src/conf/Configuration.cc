@@ -9,7 +9,6 @@
 
 namespace libhadoop {
 
-//TODO with replace ${ENV}
 std::string Configuration::substituteVars(const std::string& expr) const {
 //	std::cout << expr << std::endl;
 	if (expr.empty())
