@@ -16,19 +16,11 @@
 using namespace libhadoop;
 
 TEST(NameNode, getAddress) {
-	try {
-		libhadoop::Configuration conf;
-		conf.set("fs.default.name", "hdfs://master:9000");
-		NameNode namenode;
-		InetSocketAddress address = namenode.getAddress(conf);
-		EXPECT_EQ("master", address.hostname);
-		EXPECT_EQ(8020, address.port);
-	} catch (std::string& msg) {
-		std::cout << msg << std::endl;
-	}catch (...) {
-		std::cout << "error" << std::endl;
-		abort();
-	}
-
+	libhadoop::Configuration conf;
+	conf.set("fs.default.name", "hdfs://master:9000");
+	NameNode namenode;
+	InetSocketAddress address = namenode.getAddress(conf);
+	std::string s = address.toString();
+	EXPECT_EQ("master:9000", s);
 }
 

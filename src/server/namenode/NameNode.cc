@@ -17,15 +17,22 @@ InetSocketAddress NameNode::getAddress(const Configuration& conf) {
 
 	std::string authority = filesystemURI.getAuthority();
 	if (authority.empty()) {
-		LOG_ERROR(LOG_NAME,
-				"Invalid URI for NameNode address (check " << FileSystem::FS_DEFAULT_NAME_KEY << "): " << filesystemURI.toString() << " has no authority.");
-		throw "IllegalArgumentException";
+		std::stringstream ss;
+		ss << "Invalid URI for NameNode address (check "
+				<< FileSystem::FS_DEFAULT_NAME_KEY << "): "
+				<< filesystemURI.toString() << " has no authority.";
+		throw std::invalid_argument(ss.str());
+
 	}
 	if (!StringUtils::equalsIgnoreCase(FSConstants::HDFS_URI_SCHEME,
 			filesystemURI.getScheme())) {
-		LOG_ERROR(LOG_NAME,
-				"Invalid URI for NameNode address (check " << FileSystem::FS_DEFAULT_NAME_KEY << "): " << filesystemURI.toString() << " is not of scheme '" << FSConstants::HDFS_URI_SCHEME << "'.");
-		throw "IllegalArgumentException";
+		std::stringstream ss;
+		ss << "Invalid URI for NameNode address (check "
+				<< FileSystem::FS_DEFAULT_NAME_KEY << "): "
+				<< filesystemURI.toString() << " is not of scheme '"
+				<< FSConstants::HDFS_URI_SCHEME << "'.";
+		throw std::invalid_argument(ss.str());
+
 	}
 	return getAddress(authority);
 }

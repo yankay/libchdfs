@@ -26,13 +26,13 @@ public:
 	}
 
 	static std::vector<std::string> getStrings(const std::string& str) {
-		std::vector<std::string> v(getStringCollection(str));
+		std::vector < std::string > v(getStringCollection(str));
 		return v;
 	}
 
 	static std::vector<std::string> getStringCollection(
 			const std::string& str) {
-		std::vector<std::string> values;
+		std::vector < std::string > values;
 		if (str.empty())
 			return values;
 		size_t begin = 0;
@@ -50,7 +50,7 @@ public:
 
 	static std::vector<std::string> getTrimmedStringCollection(
 			const std::string& str) {
-		std::vector<std::string> values;
+		std::vector < std::string > values;
 		std::istringstream ss(str);
 		while (!ss.eof()) {
 			std::string result;
@@ -109,6 +109,16 @@ public:
 			return false;
 		}
 		return true;
+	}
+
+	static std::string replace(const std::string& src, const std::string& target,
+			const std::string& replacement) {
+		std::string out = src;
+		size_t i;
+		while (std::string::npos != (i=out.find(target))) {
+			out.replace(i, target.length(), replacement);
+		}
+		return out;
 	}
 
 private:

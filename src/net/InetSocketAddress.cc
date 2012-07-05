@@ -7,8 +7,15 @@
 #include "InetSocketAddress.h"
 
 namespace libhadoop {
+
 InetSocketAddress::InetSocketAddress(const std::string& hostname, int32_t port) :
 		hostname(hostname), port(port) {
-	//TODO
+}
+
+
+std::string InetSocketAddress::toString() {
+	std::stringstream ss;
+	ss << hostname << ":" << port;
+	return ss.str();
 }
 }

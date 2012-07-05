@@ -9,10 +9,13 @@
 #define NETUTILS_H_
 
 #include <string>
+#include <iostream>
 #include <map>
+#include <stdexcept>
 #include <sstream>
 #include "InetSocketAddress.h"
 #include "util/Logger.h"
+#include "fs/Path.h"
 
 namespace libhadoop {
 
@@ -25,6 +28,12 @@ public:
 
 	static std::string getStaticResolution(const std::string& host);
 
+	/**
+	 * Util method to build socket addr from either:
+	 *   <host>
+	 *   <host>:<post>
+	 *   <fs>://<host>:<port>/<path>
+	 */
 	static InetSocketAddress createSocketAddr(const std::string& target,
 			int32_t defaultPort);
 };

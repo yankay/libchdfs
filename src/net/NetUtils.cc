@@ -18,17 +18,17 @@ std::string NetUtils::getStaticResolution(const std::string& host) {
 InetSocketAddress NetUtils::createSocketAddr(const std::string& target,
 		int32_t defaultPort) {
 	if (target.empty()) {
-		LOG_ERROR(LOG_NAME, "Target address cannot be null.");
-		throw "IllegalArgumentException";
+		throw std::invalid_argument("Target address cannot be null.");
 	}
-	size_t colonIndex = target.find(":", (size_t) 0);
+	size_t colonIndex = target.find(":");
 	if (colonIndex == std::string::npos && defaultPort == -1) {
-		LOG_ERROR(LOG_NAME, "Not a host:port pair: " << target);
-		throw "RuntimeException";
+		std::stringstream ss;
+		ss << "Not a host:port pair: " << target;
+		throw std::runtime_error(ss.str());
 	}
 	std::string hostname;
 	int port = -1;
-	if (target.find("/") != std::string::npos) {
+	if (target.find("/") == std::string::npos) {
 		if (colonIndex == std::string::npos) {
 			hostname = target;
 		} else {
@@ -40,12 +40,9 @@ InetSocketAddress NetUtils::createSocketAddr(const std::string& target,
 			is >> port;
 		}
 	} else {
-		// a new uri
-		//TODO
-//			URI addr = new Path(target)
-//			.toUri();
-//			hostname = addr.getHost();
-//			port = addr.getPort();
+			URI addr = Path(target).toUri();
+			hostname = addr.getHost();
+			port = addr.getPort();
 	}
 
 	if (port == -1) {

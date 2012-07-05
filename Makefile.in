@@ -2,7 +2,7 @@ LIBHADOP_DIR = ..
 GTEST_DIR = /usr/local/src/gtest-1.6.0
 
 CXX = g++
-CXXFLAGS += -Isrc -Wall
+CXXFLAGS += -Isrc -Wall -g
 CXXTESTFLAGS += -I${GTEST_DIR}/include -pthread
 
 LIBGTEST = libgtest.a
@@ -11,6 +11,7 @@ MAKEFILE_CONFS = configure config.status config.log autom4te.cache/ Makefile
 
 CONF_CLASS = conf/Configuration
 FILESYSTEM_CLASS = fs/FileSystem
+PATH_CLASS = fs/Path
 CLIENTPROTOCOL_CLASS = hdfs/protocol/ClientProtocol
 FSCONSTANTSL_CLASS = hdfs/protocol/FSConstants
 DFSCLIENT_CLASS = hdfs/DFSClient
@@ -22,7 +23,7 @@ LOGGER_CLASS = util/Logger
 STRING_UTILS_CLASS = util/StringUtils
 
 OBJECTS = src/$(CONF_CLASS).o \
-src/$(FILESYSTEM_CLASS).o \
+src/$(FILESYSTEM_CLASS).o src/$(PATH_CLASS).o \
 src/$(CLIENTPROTOCOL_CLASS).o src/$(FSCONSTANTSL_CLASS).o src/$(DFSCLIENT_CLASS).o \
 src/$(INETSOCKETADDRESS_CLASS).o src/$(NETUTILS_CLASS).o src/$(URI_CLASS).o \
 src/$(NAMENODE_CLASS).o \

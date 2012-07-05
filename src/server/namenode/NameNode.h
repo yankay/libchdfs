@@ -11,6 +11,8 @@
 #include <string>
 #include <stdlib.h>
 #include <iostream>
+#include <stdexcept>
+#include <sstream>
 
 #include "net/InetSocketAddress.h"
 #include "conf/Configuration.h"
