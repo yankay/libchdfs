@@ -9,122 +9,124 @@
 
 namespace libhadoop {
 
-std::string Configuration::substituteVars(const std::string& expr) const {
-//	std::cout << expr << std::endl;
+string Configuration::substituteVars(const string& expr) const {
+//	cout << expr << endl;
 	if (expr.empty())
 		return expr;
-	std::string result(expr);
+	string result(expr);
 	size_t b, e = 0;
-	while (std::string::npos != (b = result.find("${", 0))
-			&& std::string::npos != (e = result.find("}", b))) {
-//		std::cout << b << "," << e << std::endl;
-		std::string var = result.substr(b + 2, e - b - 2);
-//		std::cout << var << std::endl;
+	while (string::npos != (b = result.find("${", 0))
+			&& string::npos != (e = result.find("}", b))) {
+//		cout << b << "," << e << endl;
+		string var = result.substr(b + 2, e - b - 2);
+//		cout << var << endl;
 		var = getenv(var.c_str());
-//		std::cout << var << std::endl;
+//		cout << var << endl;
 		result.replace(b, e - b + 1, var);
 	}
 	return result;
 }
 
-std::string Configuration::get(const std::string& name) const {
+string Configuration::get(const string& name) const {
 	if (properties.end() == properties.find(name))
 		return "";
 	return substituteVars(properties.find(name)->second);
 }
 
-std::string Configuration::getTrimmed(const std::string& name) {
-	std::string value = get(name);
+string Configuration::getTrimmed(const string& name) const {
+	string value = get(name);
 	return StringUtils::trim(value);
 }
 
-std::string Configuration::getRaw(const std::string& name) {
-	return properties[name];
+string Configuration::getRaw(const string& name) const {
+	if (properties.end() == properties.find(name))
+		return "";
+	return properties.find(name)->second;
 }
 
-void Configuration::set(const std::string& name, const std::string& value) {
+void Configuration::set(const string& name, const string& value) {
 	properties[name] = value;
 }
 
-void Configuration::unset(const std::string& name) {
+void Configuration::unset(const string& name) {
 	properties.erase(name);
 }
-void Configuration::setIfUnset(const std::string& name,
-		const std::string& value) {
+void Configuration::setIfUnset(const string& name,
+		const string& value) {
 	if (get(name).empty()) {
 		set(name, value);
 	}
 }
 
-std::string Configuration::get(const std::string& name,
-		const std::string& defaultValue) const {
-	std::string value(get(name));
+string Configuration::get(const string& name,
+		const string& defaultValue) const {
+	string value(get(name));
 	if (value.empty())
 		value = defaultValue;
 	return value;
 }
 
-std::string Configuration::getHexDigits(const std::string& exper) {
+string Configuration::getHexDigits(const string& exper) const {
 	return "";
 }
 
-int32_t Configuration::getInt(const std::string& name,
-		const int32_t defaultValue) {
+int32_t Configuration::getInt(const string& name,
+		const int32_t defaultValue) const {
 	return (int32_t) getLong(name, (int64_t) defaultValue);
 }
 
-void Configuration::setInt(const std::string& name, const int32_t value) {
+void Configuration::setInt(const string& name, const int32_t value) {
 	setLong(name, (int64_t) value);
 }
 
-int64_t Configuration::getLong(const std::string& name,
-		const int64_t defaultValue) {
-	std::string valueString = getTrimmed(name);
+int64_t Configuration::getLong(const string& name,
+		const int64_t defaultValue) const {
+	string valueString = getTrimmed(name);
 	if (valueString.empty()) {
 		return defaultValue;
 	}
-	std::string hexString = getHexDigits(valueString);
-	std::stringstream ss;
+	string hexString = getHexDigits(valueString);
+	stringstream ss;
 	if (hexString.empty()) {
 		ss << valueString;
 	} else {
-		ss << std::hex << hexString;
+		ss << hex << hexString;
 	}
 	int64_t v;
 	ss >> v;
 	return v;
 }
-void Configuration::setLong(const std::string& name, const int64_t value) {
-	std::string value_str;
-	std::stringstream ss;
+void Configuration::setLong(const string& name, const int64_t value) {
+	string value_str;
+	stringstream ss;
 	ss << value;
 	ss >> value_str;
 	set(name, value_str);
 }
 
-float Configuration::getFloat(const std::string& name,
-		const float defaultValue) {
-	std::string valueString = getTrimmed(name);
+float Configuration::getFloat(const string& name,
+		const float defaultValue) const {
+	string valueString = getTrimmed(name);
 	if (valueString.empty()) {
 		return defaultValue;
 	}
-	std::stringstream ss;
+	stringstream ss;
 	ss << valueString;
 	float v;
 	ss >> v;
 	return v;
 }
-void Configuration::setFloat(const std::string& name, const float value) {
-	std::string value_str;
-	std::stringstream ss;
+void Configuration::setFloat(const string& name, const float value) {
+	string value_str;
+	stringstream ss;
 	ss << value;
 	ss >> value_str;
 	set(name, value_str);
 }
 
-bool Configuration::getBoolean(const std::string& name,
-		const bool defaultValue) {
-	std::string valueString = getTrimmed(name);
+bool Configuration::getBoolean(const string& name,
+		const bool defaultValue) const {
+	string valueString = getTrimmed(name);
 	if ("true" == valueString)
 		return true;
 	else if ("false" == valueString)
@@ -132,7 +134,7 @@ bool Configuration::getBoolean(const std::string& name,
 	else
 		return defaultValue;
 }
-void Configuration::setBoolean(const std::string& name, const bool value) {
+void Configuration::setBoolean(const string& name, const bool value) {
 	if (value) {
 		set(name, "true");
 	} else {
@@ -140,7 +142,7 @@ void Configuration::setBoolean(const std::string& name, const bool value) {
 	}
 }
 
-void Configuration::setBooleanIfUnset(const std::string& name, bool value) {
+void Configuration::setBooleanIfUnset(const string& name, bool value) {
 	if (value) {
 		setIfUnset(name, "true");
 	} else {
@@ -148,24 +150,24 @@ void Configuration::setBooleanIfUnset(const std::string& name, bool value) {
 	}
 }
 
-std::vector<std::string> Configuration::getStringCollection(
-		const std::string& name) {
-	std::string valueString = get(name);
+vector<string> Configuration::getStringCollection(
+		const string& name) const {
+	string valueString = get(name);
 	return StringUtils::getStringCollection(valueString);
 }
 
-std::vector<std::string> Configuration::getTrimmedStringCollection(
-		const std::string& name) {
-	std::string valueString = get(name);
+vector<string> Configuration::getTrimmedStringCollection(
+		const string& name) const {
+	string valueString = get(name);
 	return StringUtils::getTrimmedStringCollection(valueString);
 }
 
-void Configuration::setStrings(const std::string& name,
-		const std::vector<std::string>& values) {
+void Configuration::setStrings(const string& name,
+		const vector<string>& values) {
 	set(name, StringUtils::arrayToString(values));
 }
 
-int32_t Configuration::size() {
+int32_t Configuration::size() const {
 	return properties.size();
 }
 void Configuration::clear() {

@@ -9,14 +9,14 @@
 
 namespace libhadoop {
 
-const std::string Path::SEPARATOR = "/";
+const string Path::SEPARATOR = "/";
 const char Path::SEPARATOR_CHAR = '/';
 
-const std::string Path::CUR_DIR = ".";
+const string Path::CUR_DIR = ".";
 const bool Path::WINDOWS = false;
 
-Path::Path(const std::string& pathString) {
-	std::string pathS(pathString);
+Path::Path(const string& pathString) {
+	string pathS(pathString);
 	checkPathArg(pathS);
 
 	// We can't use 'new URI(String)' directly, since it assumes things are
@@ -27,16 +27,16 @@ Path::Path(const std::string& pathString) {
 		pathS = "/" + pathS;
 
 	// parse uri components
-	std::string scheme;
-	std::string authority;
+	string scheme;
+	string authority;
 
 	size_t start = 0;
 
 	// parse uri scheme, if any
 	size_t colon = pathS.find(':');
 	size_t slash = pathS.find('/');
-	if ((colon != std::string::npos)
-			&& ((slash == std::string::npos) || (colon < slash))) { // has a scheme
+	if ((colon != string::npos)
+			&& ((slash == string::npos) || (colon < slash))) { // has a scheme
 		scheme = pathS.substr(0, colon);
 		start = colon + 1;
 	}
@@ -45,7 +45,7 @@ Path::Path(const std::string& pathString) {
 	if (pathS.find("//", start) == 0 && (pathS.length() - start > 2)) { // has authority
 		size_t nextSlash = pathS.find("/", start + 2);
 		size_t authEnd = pathS.length();
-		if (nextSlash != std::string::npos && nextSlash > 0)
+		if (nextSlash != string::npos && nextSlash > 0)
 			authEnd = nextSlash;
 		authority = pathS.substr(start + 2, authEnd - start - 2);
 		start = authEnd;
@@ -53,32 +53,32 @@ Path::Path(const std::string& pathString) {
 
 	// uri path is the rest of the string -- query & fragment not supported
 
-	std::string path;
+	string path;
 	if (pathS.length() - start > 0)
 		path = pathS.substr(start, pathS.length() - start);
-//	std::cout << "authority" << authority << std::endl;
+//	cout << "authority" << authority << endl;
 	initialize(scheme, authority, path, "");
 }
 
-void Path::checkPathArg(const std::string& path) {
+void Path::checkPathArg(const string& path) {
 	if (path.empty()) {
-		throw std::invalid_argument("Can not create a Path from a null string");
+		throw invalid_argument("Can not create a Path from a null string");
 	}
 }
 
-bool Path::hasWindowsDrive(const std::string& path, bool slashed) {
+bool Path::hasWindowsDrive(const string& path, bool slashed) {
 	return false;
 }
 
-void Path::initialize(const std::string& scheme, const std::string& authority,
-		const std::string& path, const std::string& fragment) {
+void Path::initialize(const string& scheme, const string& authority,
+		const string& path, const string& fragment) {
 	URI another(scheme, authority, normalizePath(path), "", fragment);
 	uri = another.normalize();
 }
 
-std::string Path::normalizePath(const std::string& path) {
+string Path::normalizePath(const string& path) {
 	// remove double slashes & backslashes
-	std::string p = StringUtils::replace(path, "//", "/");
+	string p = StringUtils::replace(path, "//", "/");
 	p = StringUtils::replace(p, "\\", "/");
 
 	// trim trailing slash from non-root path (ignoring windows drive)

@@ -10,34 +10,34 @@
 namespace libhadoop {
 
 const int32_t NameNode::DEFAULT_PORT = 8020;
-const std::string NameNode::LOG_NAME = "NameNode";
+const string NameNode::LOG_NAME = "NameNode";
 
 InetSocketAddress NameNode::getAddress(const Configuration& conf) {
 	URI filesystemURI = FileSystem::getDefaultUri(conf);
 
-	std::string authority = filesystemURI.getAuthority();
+	string authority = filesystemURI.getAuthority();
 	if (authority.empty()) {
-		std::stringstream ss;
+		stringstream ss;
 		ss << "Invalid URI for NameNode address (check "
 				<< FileSystem::FS_DEFAULT_NAME_KEY << "): "
 				<< filesystemURI.toString() << " has no authority.";
-		throw std::invalid_argument(ss.str());
+		throw invalid_argument(ss.str());
 
 	}
 	if (!StringUtils::equalsIgnoreCase(FSConstants::HDFS_URI_SCHEME,
 			filesystemURI.getScheme())) {
-		std::stringstream ss;
+		stringstream ss;
 		ss << "Invalid URI for NameNode address (check "
 				<< FileSystem::FS_DEFAULT_NAME_KEY << "): "
 				<< filesystemURI.toString() << " is not of scheme '"
 				<< FSConstants::HDFS_URI_SCHEME << "'.";
-		throw std::invalid_argument(ss.str());
+		throw invalid_argument(ss.str());
 
 	}
 	return getAddress(authority);
 }
 
-InetSocketAddress NameNode::getAddress(const std::string& address) {
+InetSocketAddress NameNode::getAddress(const string& address) {
 	return NetUtils::createSocketAddr(address, DEFAULT_PORT);
 }
 

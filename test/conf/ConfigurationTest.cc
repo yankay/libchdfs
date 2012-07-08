@@ -15,8 +15,12 @@
 # define INT32_MIN		(-2147483647-1)
 # define INT32_MAX		(2147483647)
 
+using namespace std;
+using namespace libhadoop;
+
+
 TEST(Configure, SETTRIM) {
-	libhadoop::Configuration conf;
+	Configuration conf;
 	conf.set("key1"," value1 ");
 	conf.set("key2","value2");
 	EXPECT_EQ("value2",conf.get("key2"));
@@ -24,7 +28,7 @@ TEST(Configure, SETTRIM) {
 }
 
 TEST(Configure, SETINT) {
-	libhadoop::Configuration conf;
+	Configuration conf;
 	conf.setInt("key1",100);
 	conf.setInt("key2",-100);
 	EXPECT_EQ(100,conf.getInt("key1",0));
@@ -32,7 +36,7 @@ TEST(Configure, SETINT) {
 }
 
 TEST(Configure, SETLONG) {
-	libhadoop::Configuration conf;
+	Configuration conf;
 	conf.setLong("key1",(int64_t)INT32_MAX+1);
 	conf.setLong("key2",(int64_t)INT32_MIN-1);
 	EXPECT_EQ((int64_t)INT32_MAX+1,conf.getLong("key1",0));
@@ -40,11 +44,11 @@ TEST(Configure, SETLONG) {
 }
 
 TEST(Configure, SETSTRINGS) {
-	libhadoop::Configuration conf;
+	Configuration conf;
 	conf.set("key1","1,2,3");
-	std::stringstream ss;
-	std::string value;
-	std::vector<std::string> v=conf.getStringCollection("key1");
+	stringstream ss;
+	string value;
+	vector<string> v=conf.getStringCollection("key1");
 	for (size_t i = 0; i < v.size(); ++i) {
 		ss << v[i];
 	}
@@ -54,11 +58,11 @@ TEST(Configure, SETSTRINGS) {
 
 
 TEST(Configure, SETTREAM) {
-	libhadoop::Configuration conf;
+	Configuration conf;
 	conf.set("key1"," 1 2 3 ");
-	std::stringstream ss;
-	std::string value;
-	std::vector<std::string> v=conf.getTrimmedStringCollection("key1");
+	stringstream ss;
+	string value;
+	vector<string> v=conf.getTrimmedStringCollection("key1");
 	for (size_t i = 0; i < v.size(); ++i) {
 		ss << v[i];
 	}
@@ -68,8 +72,8 @@ TEST(Configure, SETTREAM) {
 
 
 TEST(Configure, SETSTRINGS2) {
-	libhadoop::Configuration conf;
-	std::vector<std::string> s;
+	Configuration conf;
+	vector<string> s;
 	s.push_back("1");
 	s.push_back("2");
 	s.push_back("3");
@@ -80,8 +84,8 @@ TEST(Configure, SETSTRINGS2) {
 
 
 //TEST(Configure,substituteVars){
-//	libhadoop::Configuration conf;
-//	std::string result(conf.substituteVars("${USER} use ${LANG}"));
-//	std::cout << result << std::endl;
+//	Configuration conf;
+//	string result(conf.substituteVars("${USER} use ${LANG}"));
+//	cout << result << endl;
 //	EXPECT_EQ("yankai use en_US.UTF-8",result);
 //}

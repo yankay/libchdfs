@@ -13,14 +13,15 @@
 
 #include "server/namenode/NameNode.h"
 
+using namespace std;
 using namespace libhadoop;
 
 TEST(NameNode, getAddress) {
-	libhadoop::Configuration conf;
+	Configuration conf;
 	conf.set("fs.default.name", "hdfs://master:9000");
 	NameNode namenode;
 	InetSocketAddress address = namenode.getAddress(conf);
-	std::string s = address.toString();
+	string s = address.toString();
 	EXPECT_EQ("master:9000", s);
 }
 

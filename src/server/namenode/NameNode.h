@@ -23,16 +23,18 @@
 #include "util/StringUtils.h"
 #include "hdfs/protocol/FSConstants.h"
 
+using namespace std;
+
 namespace libhadoop {
 
 class NameNode {
 public:
 	const static int32_t DEFAULT_PORT;
-	const static std::string LOG_NAME;
+	const static string LOG_NAME;
 
-	static InetSocketAddress getAddress(const libhadoop::Configuration& conf);
+	static InetSocketAddress getAddress(const Configuration& conf);
 
-	static InetSocketAddress getAddress(const std::string& conf);
+	static InetSocketAddress getAddress(const string& conf);
 };
 
 } /* namespace libhadoop */

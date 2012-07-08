@@ -8,5 +8,5 @@
 #include "FSConstants.h"
 
 namespace libhadoop {
-const std::string FSConstants::HDFS_URI_SCHEME("hdfs");
+const string FSConstants::HDFS_URI_SCHEME("hdfs");
 } /* namespace libhadoop */

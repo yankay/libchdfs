@@ -16,17 +16,21 @@
 #include "InetSocketAddress.h"
 #include "util/Logger.h"
 #include "fs/Path.h"
+#include "conf/Configuration.h"
+#include "net/SocketFactory.h"
+
+using namespace std;
 
 namespace libhadoop {
 
 class NetUtils {
 
 public:
-	static const std::string LOG_NAME;
+	static const string LOG_NAME;
 
-	static std::map<std::string, std::string> hostToResolved;
+	static map<string, string> hostToResolved;
 
-	static std::string getStaticResolution(const std::string& host);
+	static string getStaticResolution(const string& host);
 
 	/**
 	 * Util method to build socket addr from either:
@@ -34,8 +38,12 @@ public:
 	 *   <host>:<post>
 	 *   <fs>://<host>:<port>/<path>
 	 */
-	static InetSocketAddress createSocketAddr(const std::string& target,
+	static InetSocketAddress createSocketAddr(const string& target,
 			int32_t defaultPort);
+
+	static SocketFactory getSocketFactory(const Configuration& conf,
+			const string& clazz) ;
+
 };
 
 } /* namespace libhadoop */

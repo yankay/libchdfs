@@ -10,6 +10,8 @@
 
 namespace libhadoop {
 
+using namespace std;
+
 class ClientProtocol {
 };
 

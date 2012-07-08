@@ -8,13 +8,13 @@
 
 namespace libhadoop {
 
-InetSocketAddress::InetSocketAddress(const std::string& hostname, int32_t port) :
+InetSocketAddress::InetSocketAddress(const string& hostname, int32_t port) :
 		hostname(hostname), port(port) {
 }
 
 
-std::string InetSocketAddress::toString() {
-	std::stringstream ss;
+string InetSocketAddress::toString() {
+	stringstream ss;
 	ss << hostname << ":" << port;
 	return ss.str();
 }

@@ -13,26 +13,29 @@
 
 #include "../../src/fs/FileSystem.h"
 
+using namespace std;
+using namespace libhadoop;
+
 TEST(FileSystem, GETDEFAULTURI) {
-	libhadoop::Configuration conf;
-	libhadoop::URI uri=libhadoop::FileSystem::getDefaultUri(conf);
+	Configuration conf;
+	URI uri=FileSystem::getDefaultUri(conf);
 	EXPECT_EQ("file:///",uri.toString());
 
 	conf.set("fs.default.name","local");
-	uri=libhadoop::FileSystem::getDefaultUri(conf);
+	uri=FileSystem::getDefaultUri(conf);
 	EXPECT_EQ("file:///",uri.toString());
 
 	conf.set("fs.default.name","hdfs://master:9000");
-	uri=libhadoop::FileSystem::getDefaultUri(conf);
+	uri=FileSystem::getDefaultUri(conf);
 	EXPECT_EQ("hdfs://master:9000",uri.toString());
 
 	conf.set("fs.default.name","master:9000");
-	uri=libhadoop::FileSystem::getDefaultUri(conf);
+	uri=FileSystem::getDefaultUri(conf);
 	EXPECT_EQ("hdfs://master:9000",uri.toString());
 
 
 	conf.set("fs.default.name","hdfs://master:abcd");
-	uri=libhadoop::FileSystem::getDefaultUri(conf);
+	uri=FileSystem::getDefaultUri(conf);
 	EXPECT_EQ("hdfs://master",uri.toString());
 }
 

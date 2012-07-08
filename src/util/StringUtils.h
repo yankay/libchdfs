@@ -14,31 +14,33 @@
 #include <iostream>
 #include <cctype>
 
+using namespace std;
+
 namespace libhadoop {
 
 class StringUtils {
 public:
-	static std::string trim(const std::string &str) {
-		std::string result;
-		std::istringstream trimmer(str);
+	static string trim(const string &str) {
+		string result;
+		istringstream trimmer(str);
 		trimmer >> result;
 		return result;
 	}
 
-	static std::vector<std::string> getStrings(const std::string& str) {
-		std::vector < std::string > v(getStringCollection(str));
+	static vector<string> getStrings(const string& str) {
+		vector < string > v(getStringCollection(str));
 		return v;
 	}
 
-	static std::vector<std::string> getStringCollection(
-			const std::string& str) {
-		std::vector < std::string > values;
+	static vector<string> getStringCollection(
+			const string& str) {
+		vector < string > values;
 		if (str.empty())
 			return values;
 		size_t begin = 0;
 		size_t end = 0;
-		while ((end = str.find(",", begin)) != std::string::npos) {
-//			std::cout << end << std::endl;
+		while ((end = str.find(",", begin)) != string::npos) {
+//			cout << end << endl;
 			values.push_back(str.substr(begin, end - begin));
 			begin = end + 1;
 		}
@@ -48,29 +50,29 @@ public:
 		return values;
 	}
 
-	static std::vector<std::string> getTrimmedStringCollection(
-			const std::string& str) {
-		std::vector < std::string > values;
-		std::istringstream ss(str);
+	static vector<string> getTrimmedStringCollection(
+			const string& str) {
+		vector < string > values;
+		istringstream ss(str);
 		while (!ss.eof()) {
-			std::string result;
+			string result;
 			ss >> result;
 			values.push_back(result);
 		}
 		return values;
 	}
 
-	static std::string arrayToString(const std::vector<std::string>& strs) {
-		std::stringstream ss;
-		std::string sep = "";
+	static string arrayToString(const vector<string>& strs) {
+		stringstream ss;
+		string sep = "";
 		for (size_t i = 0; i < strs.size(); ++i) {
 			ss << sep << strs[i];
 			sep = ",";
 		}
 		return ss.str();
 	}
-	static bool equalsIgnoreCase(const std::string& one,
-			const std::string& anotherString) {
+	static bool equalsIgnoreCase(const string& one,
+			const string& anotherString) {
 		return (one == anotherString) ?
 				true :
 				(anotherString.length() == one.length())
@@ -78,11 +80,11 @@ public:
 								anotherString, 0, one.length());
 	}
 
-	static bool regionMatches(bool ignoreCase, const std::string& one,
-			int toffset, const std::string& other, int ooffset, int len) {
-		std::string ta(one);
+	static bool regionMatches(bool ignoreCase, const string& one,
+			int toffset, const string& other, int ooffset, int len) {
+		string ta(one);
 		int to = toffset;
-		std::string pa(other);
+		string pa(other);
 		int po = ooffset;
 		// Note: toffset, ooffset, or len might be near -1>>>1.
 		if ((ooffset < 0) || (toffset < 0)
@@ -111,11 +113,11 @@ public:
 		return true;
 	}
 
-	static std::string replace(const std::string& src, const std::string& target,
-			const std::string& replacement) {
-		std::string out = src;
+	static string replace(const string& src, const string& target,
+			const string& replacement) {
+		string out = src;
 		size_t i;
-		while (std::string::npos != (i=out.find(target))) {
+		while (string::npos != (i=out.find(target))) {
 			out.replace(i, target.length(), replacement);
 		}
 		return out;

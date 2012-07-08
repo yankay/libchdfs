@@ -10,11 +10,13 @@
 
 #include <string>
 
+using namespace std;
+
 namespace libhadoop {
 
 class FSConstants {
 public:
-	static const std::string HDFS_URI_SCHEME  ;
+	static const string HDFS_URI_SCHEME;
 };
 
 } /* namespace libhadoop */

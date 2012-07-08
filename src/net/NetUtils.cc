@@ -8,41 +8,41 @@
 #include "NetUtils.h"
 
 namespace libhadoop {
-std::map<std::string, std::string> NetUtils::hostToResolved;
-const std::string NetUtils::LOG_NAME("NetUtils");
+map<string, string> NetUtils::hostToResolved;
+const string NetUtils::LOG_NAME("NetUtils");
 
-std::string NetUtils::getStaticResolution(const std::string& host) {
+string NetUtils::getStaticResolution(const string& host) {
 	return NetUtils::hostToResolved[host];
 }
 
-InetSocketAddress NetUtils::createSocketAddr(const std::string& target,
+InetSocketAddress NetUtils::createSocketAddr(const string& target,
 		int32_t defaultPort) {
 	if (target.empty()) {
-		throw std::invalid_argument("Target address cannot be null.");
+		throw invalid_argument("Target address cannot be null.");
 	}
 	size_t colonIndex = target.find(":");
-	if (colonIndex == std::string::npos && defaultPort == -1) {
-		std::stringstream ss;
+	if (colonIndex == string::npos && defaultPort == -1) {
+		stringstream ss;
 		ss << "Not a host:port pair: " << target;
-		throw std::runtime_error(ss.str());
+		throw runtime_error(ss.str());
 	}
-	std::string hostname;
+	string hostname;
 	int port = -1;
-	if (target.find("/") == std::string::npos) {
-		if (colonIndex == std::string::npos) {
+	if (target.find("/") == string::npos) {
+		if (colonIndex == string::npos) {
 			hostname = target;
 		} else {
 			// must be the old style <host>:<port>
 			hostname = target.substr(0, colonIndex);
-			std::string portStr = target.substr(colonIndex + 1,
-					std::string::npos);
-			std::istringstream is(portStr);
+			string portStr = target.substr(colonIndex + 1,
+					string::npos);
+			istringstream is(portStr);
 			is >> port;
 		}
 	} else {
-			URI addr = Path(target).toUri();
-			hostname = addr.getHost();
-			port = addr.getPort();
+		URI addr = Path(target).toUri();
+		hostname = addr.getHost();
+		port = addr.getPort();
 	}
 
 	if (port == -1) {
@@ -55,4 +55,10 @@ InetSocketAddress NetUtils::createSocketAddr(const std::string& target,
 	InetSocketAddress isaddress(hostname, port);
 	return isaddress;
 }
+
+SocketFactory NetUtils::getSocketFactory(const Configuration& conf,
+		const string& clazz) {
+	return SocketFactory();
+}
+
 } /* namespace libhadoop */

@@ -15,32 +15,34 @@
 #include "net/URI.h"
 #include "util/StringUtils.h"
 
+using namespace std;
+
 namespace libhadoop {
 
 class Path {
 
 public:
 	/** The directory separator, a slash. */
-	static const std::string SEPARATOR;
+	static const string SEPARATOR;
 	static const char SEPARATOR_CHAR;
 
-	static const std::string CUR_DIR;
+	static const string CUR_DIR;
 
-	Path(const std::string& pathString);
+	Path(const string& pathString);
 	URI toUri();
 
 private:
 	URI uri;                                // a hierarchical uri
 	static const bool WINDOWS;
 
-	void checkPathArg( const std::string& path);
+	void checkPathArg( const string& path);
 
-	bool hasWindowsDrive(const std::string& path, bool slashed);
+	bool hasWindowsDrive(const string& path, bool slashed);
 
-	void initialize(const std::string& scheme, const std::string& authority, const std::string& path,
-			const std::string& fragment);
+	void initialize(const string& scheme, const string& authority, const string& path,
+			const string& fragment);
 
-	std::string normalizePath(const std::string& path);
+	string normalizePath(const string& path);
 };
 
 } /* namespace libhadoop */

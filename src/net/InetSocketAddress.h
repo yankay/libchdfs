@@ -12,14 +12,16 @@
 #include <sstream>
 #include <stdlib.h>
 
+using namespace std;
+
 namespace libhadoop {
 class InetSocketAddress {
 public:
-	InetSocketAddress(const std::string& hostname, int32_t port);
-	std::string toString();
+	InetSocketAddress(const string& hostname, int32_t port);
+	string toString();
 
 private:
-	std::string hostname;
+	string hostname;
 	int32_t port;
 
 };
