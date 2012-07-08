@@ -43,7 +43,7 @@ private:
 	void setAuthenticationMethod(AuthenticationMethod authMethod);
 
 	static auto_ptr<UserGroupInformation> loginUser;
-
+	string clientName;
 };
 
 } /* namespace libhadoop */

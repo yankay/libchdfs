@@ -11,18 +11,23 @@ using namespace std;
 
 namespace libhadoop {
 
-DFSClient::DFSClient(const Configuration& conf) {
+const int64_t DFSClient::DEFAULT_BLOCK_SIZE = 64 * 1024 * 1024;
+
+DFSClient::DFSClient(const Configuration& conf) :
+		ugi(UserGroupInformation::getCurrentUser()) {
 	init(NameNode::getAddress(conf), ClientProtocol(), conf,
 			FileSystemStatistics());
 }
 
 DFSClient::DFSClient(const InetSocketAddress& nameNodeAddr,
-		const Configuration& conf) {
+		const Configuration& conf) :
+		ugi(UserGroupInformation::getCurrentUser()) {
 	init(nameNodeAddr, ClientProtocol(), conf, FileSystemStatistics());
 }
 
 DFSClient::DFSClient(const InetSocketAddress& nameNodeAddr,
-		const Configuration& conf, const FileSystemStatistics& stats) {
+		const Configuration& conf, const FileSystemStatistics& stats) :
+		ugi(UserGroupInformation::getCurrentUser()) {
 	init(nameNodeAddr, ClientProtocol(), conf, stats);
 }
 
@@ -40,21 +45,23 @@ void DFSClient::init(const InetSocketAddress& nameNodeAddr,
 	writePacketSize = conf.getInt("dfs.write.packet.size", 64 * 1024);
 	maxBlockAcquireFailures = DFSClient::getMaxBlockAcquireFailures(conf);
 
-	ugi = UserGroupInformation::getCurrentUser();
+	string taskId = conf.get("mapred.task.id");
+	if (!taskId.empty()) {
+		string dfsclientStr = "DFSClient_";
+		clientName = dfsclientStr + taskId;
+	} else {
+		stringstream dfsclientStr;
+		dfsclientStr << "DFSClient_" << rand() % 65535;
+		clientName = dfsclientStr.str();
+	}
 
-//	String taskId = conf.get("mapred.task.id");
-//	if (taskId != null) {
-//		this.clientName = "DFSClient_" + taskId;
-//	} else {
-//		this.clientName = "DFSClient_" + r.nextInt();
-//	}
-//	defaultBlockSize = conf.getLong("dfs.block.size", DEFAULT_BLOCK_SIZE);
-//	defaultReplication = (short) conf.getInt("dfs.replication", 3);
-//
-//	this.socketCache = new SocketCache(
-//			conf.getInt(DFSConfigKeys.DFS_CLIENT_SOCKET_CACHE_CAPACITY_KEY,
-//					DFSConfigKeys.DFS_CLIENT_SOCKET_CACHE_CAPACITY_DEFAULT));
-//
+	defaultBlockSize = conf.getLong("dfs.block.size", DEFAULT_BLOCK_SIZE);
+	defaultReplication = (int16_t) conf.getInt("dfs.replication", 3);
+
+	socketCache = SocketCache(
+			conf.getInt(DFSConfigKeys::DFS_CLIENT_SOCKET_CACHE_CAPACITY_KEY,
+					DFSConfigKeys::DFS_CLIENT_SOCKET_CACHE_CAPACITY_DEFAULT));
+
 //	if (nameNodeAddr != null && rpcNamenode == null) {
 //		this.rpcNamenode = createRPCNamenode(nameNodeAddr, conf, ugi);
 //		this.namenode = createNamenode(this.rpcNamenode);
