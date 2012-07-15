@@ -20,6 +20,11 @@ class DFSConfigKeys {
 public:
 	static const string DFS_CLIENT_SOCKET_CACHE_CAPACITY_KEY;
 	static const int32_t DFS_CLIENT_SOCKET_CACHE_CAPACITY_DEFAULT;
+	static const string DFS_CLIENT_READ_SHORTCIRCUIT_KEY;
+	static const bool DFS_CLIENT_READ_SHORTCIRCUIT_DEFAULT;
+	static const string DFS_CLIENT_USE_DN_HOSTNAME;
+	static const bool DFS_CLIENT_USE_DN_HOSTNAME_DEFAULT;
+	static const string DFS_CLIENT_LOCAL_INTERFACES;
 
 };
 

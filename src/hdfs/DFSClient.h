@@ -11,7 +11,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string>
-#include  <sstream>
+#include <sstream>
+#include <vector>
 #include "conf/Configuration.h"
 #include "net/InetSocketAddress.h"
 #include "fs/FileSystem.h"
@@ -20,7 +21,8 @@
 #include "server/common/HdfsConstants.h"
 #include "net/SocketFactory.h"
 #include "security/UserGroupInformation.h"
-
+#include "util/Logger.h"
+#include "util/Joiner.h"
 #include "DFSConfigKeys.h"
 #include "SocketCache.h"
 
@@ -30,6 +32,8 @@ namespace libhadoop {
 
 class DFSClient {
 public:
+	ClientProtocol namenode;
+
 	DFSClient(const Configuration& conf);
 
 	DFSClient(const InetSocketAddress& nameNodeAddr, const Configuration& conf);
@@ -55,6 +59,10 @@ private:
 	SocketCache socketCache;
 	UserGroupInformation& ugi;
 	string clientName;
+	ClientProtocol rpcNamenode;
+	bool shortCircuitLocalReads;
+	bool connectToDnViaHostname;
+	vector<InetSocketAddress> localInterfaceAddrs;
 
 	DFSClient();
 
@@ -63,6 +71,15 @@ private:
 			const FileSystemStatistics& stats);
 
 	static int32_t getMaxBlockAcquireFailures(const Configuration& conf);
+
+	static ClientProtocol createRPCNamenode(
+			const InetSocketAddress& nameNodeAddr, const Configuration& conf,
+			const UserGroupInformation& ugi);
+
+	static ClientProtocol createNamenode(const ClientProtocol& rpcNamenode);
+
+	static vector<InetSocketAddress> getLocalInterfaceAddrs(
+			const vector<string>& interfaceNames);
 
 };
 

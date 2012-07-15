@@ -12,10 +12,19 @@ InetSocketAddress::InetSocketAddress(const string& hostname, int32_t port) :
 		hostname(hostname), port(port) {
 }
 
-
-string InetSocketAddress::toString() {
+string InetSocketAddress::toString() const {
 	stringstream ss;
 	ss << hostname << ":" << port;
 	return ss.str();
 }
+
+vector<string> InetSocketAddress::toStrings(
+		const vector<InetSocketAddress>& addresses) {
+	vector < string > strs;
+	for (size_t i = 0; i < addresses.size(); ++i) {
+		strs.push_back(addresses[i].toString());
+	}
+	return strs;
+}
+
 }

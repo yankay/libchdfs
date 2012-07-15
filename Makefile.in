@@ -25,6 +25,7 @@ USER_CLASS = security/User
 USERGROUPINFOMATION_CLASS = security/UserGroupInformation
 HDFSCONSTANTS_CLASS=server/common/HdfsConstants
 NAMENODE_CLASS = server/namenode/NameNode
+JOINER_CLASS = util/Joiner
 LOGGER_CLASS = util/Logger
 STRING_UTILS_CLASS = util/StringUtils
 
@@ -35,12 +36,13 @@ src/$(DFSCLIENT_CLASS).o src/$(DFSCONFIGKEYS_CLASS).o src/$(SOCKETCACHE_CLASS).o
 src/$(INETSOCKETADDRESS_CLASS).o src/$(NETUTILS_CLASS).o src/$(SOCKETFACTORY_CLASS).o src/$(URI_CLASS).o \
 src/$(USER_CLASS).o src/$(USERGROUPINFOMATION_CLASS).o \
 src/$(HDFSCONSTANTS_CLASS).o src/$(NAMENODE_CLASS).o \
-src/$(LOGGER_CLASS).o src/$(STRING_UTILS_CLASS).o
+src/$(JOINER_CLASS).o src/$(LOGGER_CLASS).o src/$(STRING_UTILS_CLASS).o
 SOURCES = $(OBJECTS:.o=.cc)
 HEADERS = $(OBJECTS:.o=.h)
 
-TESTS = test/$(CONF_CLASS)Test.cc test/$(FILESYSTEM_CLASS)Test.cc  test/$(NAMENODE_CLASS)Test.cc \
-test/$(USERGROUPINFOMATION_CLASS)Test.cc
+TESTS = test/$(JOINER_CLASS)Test.cc 
+# test/$(CONF_CLASS)Test.cc test/$(FILESYSTEM_CLASS)Test.cc  test/$(NAMENODE_CLASS)Test.cc \
+# test/$(USERGROUPINFOMATION_CLASS)Test.cc 
 TEST_MAIN = test/test.cc
 
 all: $(LTLIBRARIES)
