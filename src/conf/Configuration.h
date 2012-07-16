@@ -11,11 +11,12 @@
 #include <map>
 #include <vector>
 #include <string>
-#include <stdint.h>
+#include <sstream>
 #include <iostream>
+
+#include <stdint.h>
 #include <assert.h>
 #include <stdlib.h>
-#include <sstream>
 
 #include <util/StringUtils.h>
 
@@ -44,8 +45,7 @@ public:
 	void setBooleanIfUnset(const string& name, bool value);
 	vector<string> getStringCollection(const string& name) const;
 	vector<string> getTrimmedStringCollection(const string& name) const;
-	void setStrings(const string& name,
-			const vector<string>& values);
+	void setStrings(const string& name, const vector<string>& values);
 	int32_t size() const;
 	void clear();
 // Iterator<Map.Entry<String, String>> iterator() ;

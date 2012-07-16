@@ -28,21 +28,23 @@ public:
 
 	static const string CUR_DIR;
 
+	static const bool WINDOWS;
+
 	Path(const string& pathString);
 	URI toUri();
 
 private:
 	URI uri;                                // a hierarchical uri
-	static const bool WINDOWS;
 
-	void checkPathArg( const string& path);
+	void checkPathArg(const string& path);
+
+	void initialize(const string& scheme, const string& authority,
+			const string& path, const string& fragment);
+
+	string normalizePath(const string& path);
 
 	bool hasWindowsDrive(const string& path, bool slashed);
 
-	void initialize(const string& scheme, const string& authority, const string& path,
-			const string& fragment);
-
-	string normalizePath(const string& path);
 };
 
 } /* namespace libhadoop */

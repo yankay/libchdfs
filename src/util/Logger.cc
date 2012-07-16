@@ -9,5 +9,8 @@
 
 namespace libhadoop {
 
-} /* namespace libhadoop */
+int loglevel=WARN;
+
+}
+/* namespace libhadoop */
 

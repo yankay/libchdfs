@@ -15,7 +15,7 @@ const int64_t DFSClient::DEFAULT_BLOCK_SIZE = 64 * 1024 * 1024;
 const int32_t DFSClient::MAX_BLOCK_ACQUIRE_FAILURES = 3;
 
 DFSClient::DFSClient(const Configuration& conf) :
-		conf(conf), ugi(UserGroupInformation::getCurrentUser()) {
+		ugi(UserGroupInformation::getCurrentUser()),clientRunning(true), conf(conf) {
 	InetSocketAddress nameNodeAddr(NameNode::getAddress(conf));
 	init(nameNodeAddr, createRPCNamenode(nameNodeAddr, conf, ugi), conf,
 			FileSystemStatistics());
@@ -23,14 +23,14 @@ DFSClient::DFSClient(const Configuration& conf) :
 
 DFSClient::DFSClient(const InetSocketAddress& nameNodeAddr,
 		const Configuration& conf) :
-		conf(conf), ugi(UserGroupInformation::getCurrentUser()) {
+		ugi(UserGroupInformation::getCurrentUser()), clientRunning(true),conf(conf) {
 	init(nameNodeAddr, createRPCNamenode(nameNodeAddr, conf, ugi), conf,
 			FileSystemStatistics());
 }
 
 DFSClient::DFSClient(const InetSocketAddress& nameNodeAddr,
 		const Configuration& conf, const FileSystemStatistics& stats) :
-		conf(conf), ugi(UserGroupInformation::getCurrentUser()) {
+		ugi(UserGroupInformation::getCurrentUser()), clientRunning(true),conf(conf) {
 	init(nameNodeAddr, createRPCNamenode(nameNodeAddr, conf, ugi), conf, stats);
 }
 

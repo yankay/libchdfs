@@ -15,8 +15,8 @@ string Configuration::substituteVars(const string& expr) const {
 		return expr;
 	string result(expr);
 	size_t b, e = 0;
-	while (string::npos != (b = result.find("${", 0))
-			&& string::npos != (e = result.find("}", b))) {
+	while (string::npos != (b = result.find("${", 0)) && string::npos != (e =
+			result.find("}", b))) {
 //		cout << b << "," << e << endl;
 		string var = result.substr(b + 2, e - b - 2);
 //		cout << var << endl;
@@ -51,8 +51,7 @@ void Configuration::set(const string& name, const string& value) {
 void Configuration::unset(const string& name) {
 	properties.erase(name);
 }
-void Configuration::setIfUnset(const string& name,
-		const string& value) {
+void Configuration::setIfUnset(const string& name, const string& value) {
 	if (get(name).empty()) {
 		set(name, value);
 	}
@@ -150,8 +149,7 @@ void Configuration::setBooleanIfUnset(const string& name, bool value) {
 	}
 }
 
-vector<string> Configuration::getStringCollection(
-		const string& name) const {
+vector<string> Configuration::getStringCollection(const string& name) const {
 	string valueString = get(name);
 	return StringUtils::getStringCollection(valueString);
 }

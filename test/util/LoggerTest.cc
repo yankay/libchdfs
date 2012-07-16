@@ -16,7 +16,8 @@
 using namespace std;
 using namespace libhadoop;
 
-TEST(Joiner, JOIN) {
-	Logger("LoggerTest",WARN) << "test";
+TEST(Logger, TEST) {
+	LOG_TRACE("LogTest","test1")
+	LOG_WARN("LogTest","test2")
 }
 

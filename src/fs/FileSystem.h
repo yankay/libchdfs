@@ -14,13 +14,13 @@
 #include "net/URI.h"
 #include "util/Logger.h"
 #include "conf/Configuration.h"
+
 using namespace std;
 
 namespace libhadoop {
 class FileSystem {
 public:
 	const static string FS_DEFAULT_NAME_KEY;
-	const static string LOG_NAME;
 
 	static URI getDefaultUri(const Configuration& conf);
 
@@ -32,5 +32,6 @@ private:
 class FileSystemStatistics {
 
 };
+
 }
 #endif /* FILESYSTEM_H_ */

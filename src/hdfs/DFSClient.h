@@ -8,11 +8,13 @@
 #ifndef DFSCLIENT_H_
 #define DFSCLIENT_H_
 
-#include <stdint.h>
-#include <stdlib.h>
 #include <string>
 #include <sstream>
 #include <vector>
+
+#include <stdint.h>
+#include <stdlib.h>
+
 #include "conf/Configuration.h"
 #include "net/InetSocketAddress.h"
 #include "fs/FileSystem.h"
@@ -33,6 +35,13 @@ namespace libhadoop {
 class DFSClient {
 public:
 	ClientProtocol namenode;
+	UserGroupInformation& ugi;
+	bool clientRunning;
+	string clientName;
+
+	SocketFactory socketFactory;
+	SocketCache socketCache;
+
 
 	DFSClient(const Configuration& conf);
 
@@ -47,6 +56,8 @@ public:
 	static const int64_t DEFAULT_BLOCK_SIZE;
 
 private:
+	ClientProtocol rpcNamenode;
+
 	Configuration conf;
 	FileSystemStatistics stats;
 	int32_t socketTimeout;
@@ -55,11 +66,7 @@ private:
 	int32_t maxBlockAcquireFailures;
 	int64_t defaultBlockSize;
 	int16_t defaultReplication;
-	SocketFactory socketFactory;
-	SocketCache socketCache;
-	UserGroupInformation& ugi;
-	string clientName;
-	ClientProtocol rpcNamenode;
+
 	bool shortCircuitLocalReads;
 	bool connectToDnViaHostname;
 	vector<InetSocketAddress> localInterfaceAddrs;

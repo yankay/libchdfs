@@ -40,9 +40,9 @@ src/$(JOINER_CLASS).o src/$(LOGGER_CLASS).o src/$(STRING_UTILS_CLASS).o
 SOURCES = $(OBJECTS:.o=.cc)
 HEADERS = $(OBJECTS:.o=.h)
 
-TESTS = test/$(JOINER_CLASS)Test.cc 
+TESTS = test/$(LOGGER_CLASS)Test.cc 
 # test/$(CONF_CLASS)Test.cc test/$(FILESYSTEM_CLASS)Test.cc  test/$(NAMENODE_CLASS)Test.cc \
-# test/$(USERGROUPINFOMATION_CLASS)Test.cc 
+# test/$(USERGROUPINFOMATION_CLASS)Test.cc  test/$(JOINER_CLASS)Test.cc 
 TEST_MAIN = test/test.cc
 
 all: $(LTLIBRARIES)
