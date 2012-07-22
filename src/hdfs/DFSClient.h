@@ -11,9 +11,10 @@
 #include <string>
 #include <sstream>
 #include <vector>
-
 #include <stdint.h>
 #include <stdlib.h>
+#include <memory>
+#include <exception>
 
 #include "conf/Configuration.h"
 #include "net/InetSocketAddress.h"
@@ -25,6 +26,8 @@
 #include "security/UserGroupInformation.h"
 #include "util/Logger.h"
 #include "util/Joiner.h"
+#include "ipc/RPC.h"
+#include "ipc/VersionedProtocol.h"
 #include "DFSConfigKeys.h"
 #include "SocketCache.h"
 
@@ -34,14 +37,17 @@ namespace libhadoop {
 
 class DFSClient {
 public:
-	ClientProtocol namenode;
+
+	static const int32_t MAX_BLOCK_ACQUIRE_FAILURES;
+	static const int64_t DEFAULT_BLOCK_SIZE;
+
+	ClientProtocol* namenode;
 	UserGroupInformation& ugi;
 	bool clientRunning;
 	string clientName;
 
 	SocketFactory socketFactory;
 	SocketCache socketCache;
-
 
 	DFSClient(const Configuration& conf);
 
@@ -50,13 +56,12 @@ public:
 	DFSClient(const InetSocketAddress& nameNodeAddr, const Configuration& conf,
 			const FileSystemStatistics& stats);
 
+	bool delete_m(const string& src, bool recursive);
+
 	virtual ~DFSClient();
 
-	static const int32_t MAX_BLOCK_ACQUIRE_FAILURES;
-	static const int64_t DEFAULT_BLOCK_SIZE;
-
 private:
-	ClientProtocol rpcNamenode;
+	auto_ptr<ClientProtocol> rpcNamenode;
 
 	Configuration conf;
 	FileSystemStatistics stats;
@@ -69,25 +74,27 @@ private:
 
 	bool shortCircuitLocalReads;
 	bool connectToDnViaHostname;
+
 	vector<InetSocketAddress> localInterfaceAddrs;
 
 	DFSClient();
 
 	void init(const InetSocketAddress& nameNodeAddr,
-			const ClientProtocol& rpcNamenode, const Configuration& conf,
+			auto_ptr<ClientProtocol> rpcNamenode, const Configuration& conf,
 			const FileSystemStatistics& stats);
 
 	static int32_t getMaxBlockAcquireFailures(const Configuration& conf);
 
-	static ClientProtocol createRPCNamenode(
+	static auto_ptr<ClientProtocol> createRPCNamenode(
 			const InetSocketAddress& nameNodeAddr, const Configuration& conf,
 			const UserGroupInformation& ugi);
 
-	static ClientProtocol createNamenode(const ClientProtocol& rpcNamenode);
+	static ClientProtocol* createNamenode(ClientProtocol& rpcNamenode);
 
 	static vector<InetSocketAddress> getLocalInterfaceAddrs(
 			const vector<string>& interfaceNames);
 
+	void checkOpen();
 };
 
 } /* namespace libhadoop */

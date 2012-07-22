@@ -5,10 +5,23 @@
  *      Author: yank1
  */
 
-#include "../src/hdfs/DFSClient.h"
 
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <stdlib.h>
 
+#include "gtest/gtest.h"
 
-int main(int argc, char **argv) {
+#include "../../src/hdfs/DFSClient.h"
 
+using namespace std;
+using namespace libhadoop;
+
+TEST(FileSystem, GETDEFAULTURI) {
+	Configuration conf;
+	conf.set("fs.default.name","hdfs://localhost:9000");
+	DFSClient dfsClient(conf);
+	dfsClient.delete_m("/test/t",false);
 }
+

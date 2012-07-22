@@ -15,7 +15,8 @@ const int64_t DFSClient::DEFAULT_BLOCK_SIZE = 64 * 1024 * 1024;
 const int32_t DFSClient::MAX_BLOCK_ACQUIRE_FAILURES = 3;
 
 DFSClient::DFSClient(const Configuration& conf) :
-		ugi(UserGroupInformation::getCurrentUser()),clientRunning(true), conf(conf) {
+		ugi(UserGroupInformation::getCurrentUser()), clientRunning(true), conf(
+				conf) {
 	InetSocketAddress nameNodeAddr(NameNode::getAddress(conf));
 	init(nameNodeAddr, createRPCNamenode(nameNodeAddr, conf, ugi), conf,
 			FileSystemStatistics());
@@ -23,19 +24,21 @@ DFSClient::DFSClient(const Configuration& conf) :
 
 DFSClient::DFSClient(const InetSocketAddress& nameNodeAddr,
 		const Configuration& conf) :
-		ugi(UserGroupInformation::getCurrentUser()), clientRunning(true),conf(conf) {
+		ugi(UserGroupInformation::getCurrentUser()), clientRunning(true), conf(
+				conf) {
 	init(nameNodeAddr, createRPCNamenode(nameNodeAddr, conf, ugi), conf,
 			FileSystemStatistics());
 }
 
 DFSClient::DFSClient(const InetSocketAddress& nameNodeAddr,
 		const Configuration& conf, const FileSystemStatistics& stats) :
-		ugi(UserGroupInformation::getCurrentUser()), clientRunning(true),conf(conf) {
+		ugi(UserGroupInformation::getCurrentUser()), clientRunning(true), conf(
+				conf) {
 	init(nameNodeAddr, createRPCNamenode(nameNodeAddr, conf, ugi), conf, stats);
 }
 
 void DFSClient::init(const InetSocketAddress& nameNodeAddr,
-		const ClientProtocol& rpcNamenode, const Configuration& conf,
+		auto_ptr<ClientProtocol> rpcNamenode, const Configuration& conf,
 		const FileSystemStatistics& stats) {
 	this->stats = stats;
 	socketTimeout = conf.getInt("dfs.socket.timeout",
@@ -65,7 +68,7 @@ void DFSClient::init(const InetSocketAddress& nameNodeAddr,
 					DFSConfigKeys::DFS_CLIENT_SOCKET_CACHE_CAPACITY_DEFAULT));
 
 	this->rpcNamenode = rpcNamenode;
-	this->namenode = createNamenode(rpcNamenode);
+	this->namenode = createNamenode(*rpcNamenode);
 
 	// read directly from the block file if configured.
 	this->shortCircuitLocalReads = conf.getBoolean(
@@ -96,21 +99,36 @@ int32_t DFSClient::getMaxBlockAcquireFailures(const Configuration& conf) {
 DFSClient::~DFSClient() {
 }
 
-ClientProtocol DFSClient::createRPCNamenode(
+auto_ptr<ClientProtocol> DFSClient::createRPCNamenode(
 		const InetSocketAddress& nameNodeAddr, const Configuration& conf,
 		const UserGroupInformation& ugi) {
-//todo
-	return ClientProtocol();
+	auto_ptr<VersionedProtocol> vp = RPC::getProxy("ClientProtocol",
+			ClientProtocol::versionID, nameNodeAddr, ugi, conf,
+			NetUtils::getSocketFactory(conf, "ClientProtocol"));
+	ClientProtocol* p = dynamic_cast<ClientProtocol*>(vp.get());
+	vp.release();
+	return auto_ptr < ClientProtocol > (p);
 }
 
-ClientProtocol DFSClient::createNamenode(const ClientProtocol& rpcNamenode) { //todo
-	return ClientProtocol();
+ClientProtocol* DFSClient::createNamenode(ClientProtocol& rpcNamenode) { //todo
+	return &rpcNamenode;
 }
 
 vector<InetSocketAddress> DFSClient::getLocalInterfaceAddrs(
 		const vector<string>& interfaceNames) { //todo
 	vector<InetSocketAddress> v;
 	return v;
+}
+
+void DFSClient::checkOpen() {
+	if (!clientRunning) {
+		throw runtime_error("Filesystem closed");
+	}
+}
+
+bool DFSClient::delete_m(const string& src, bool recursive) {
+	checkOpen();
+	return namenode->delete_m(src, recursive);
 }
 
 } /* namespace libhadoop */

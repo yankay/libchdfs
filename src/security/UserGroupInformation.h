@@ -25,7 +25,6 @@ class UserGroupInformation {
 public:
 	static const string HADOOP_TOKEN_FILE_LOCATION;
 
-
 	UserGroupInformation();
 
 	string toString();
@@ -35,7 +34,6 @@ public:
 	static bool isSecurityEnabled();
 	static UserGroupInformation& getLoginUser();
 	static UserGroupInformation& getCurrentUser();
-
 private:
 	User user;
 	UserGroupInformation(const UserGroupInformation& ugi);
@@ -44,6 +42,7 @@ private:
 
 	static auto_ptr<UserGroupInformation> loginUser;
 	string clientName;
+
 };
 
 } /* namespace libhadoop */
