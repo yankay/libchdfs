@@ -21,6 +21,7 @@
 #include "net/SocketFactory.h"
 
 #include "VersionedProtocol.h"
+#include "ConnectionId.h"
 
 using namespace std;
 
@@ -31,6 +32,12 @@ public:
 	Invoker(const string& protocol, const InetSocketAddress& address,
 			const UserGroupInformation& ticket, const Configuration& conf,
 			const SocketFactory& factory, int32_t rpcTimeout);
+
+private:
+	ConnectionId remoteId;
+//	Client client;
+	bool isClosed;
+
 };
 
 /**
@@ -58,7 +65,6 @@ private:
 }
 #include "ClientProtocolRPC.h"
 namespace libhadoop {
-
 
 class RPC {
 

@@ -13,11 +13,18 @@
 
 namespace libhadoop {
 
-class ClientProtocolRPC :public ClientProtocol {
+class ClientProtocolRPC: public ClientProtocol {
 
 public:
 	ClientProtocolRPC(const Invoker& invoker);
 	virtual ~ClientProtocolRPC();
+
+//	bool delete_m(const string& src);
+//
+//	bool delete_m(const string& src, bool recursive);
+//
+//	int64_t getProtocolVersion(const string& protocol, int64_t clientVersion);
+
 };
 
 } /* namespace libhadoop */

@@ -36,12 +36,13 @@ public:
 	static UserGroupInformation& getCurrentUser();
 private:
 	User user;
-	UserGroupInformation(const UserGroupInformation& ugi);
+	string clientName;
+
+//	UserGroupInformation(const UserGroupInformation& ugi);
 
 	void setAuthenticationMethod(AuthenticationMethod authMethod);
 
 	static auto_ptr<UserGroupInformation> loginUser;
-	string clientName;
 
 };
 
