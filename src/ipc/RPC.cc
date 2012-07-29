@@ -14,10 +14,8 @@ Invoker::Invoker(const string& protocol, const InetSocketAddress& address,
 		const SocketFactory& factory, int32_t rpcTimeout) :
 		remoteId(
 				ConnectionId::getConnectionId(address, protocol, ticket,
-						rpcTimeout, conf)), isClosed(false) {
-//	this->remoteId = ConnectionId::getConnectionId(address, protocol, ticket,
-//			rpcTimeout, conf);
-//	this->client = CLIENTS.getClient(conf, factory);
+						rpcTimeout, conf)), client(
+				ClientCache::CLIENTS.getClient(conf, factory)), isClosed(false) {
 }
 
 auto_ptr<VersionedProtocol> RPC::newProxyInstance(const string& protocol,
@@ -29,4 +27,7 @@ auto_ptr<VersionedProtocol> RPC::newProxyInstance(const string& protocol,
 		throw invalid_argument("RPC: protocol not support");
 	}
 }
+
+//ClientCache RPC::CLIENTS();
+
 } /* namespace libhadoop */

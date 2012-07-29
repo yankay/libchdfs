@@ -13,15 +13,23 @@
 #include <stdlib.h>
 #include <sstream>
 #include <stdexcept>
+#include <vector>
+
+#include <sys/time.h>
 
 #include "conf/Configuration.h"
 #include "net/InetSocketAddress.h"
 #include "hdfs/protocol/ClientProtocol.h"
 #include "security/UserGroupInformation.h"
 #include "net/SocketFactory.h"
+#include "lang/Object.h"
+#include "util/Logger.h"
 
 #include "VersionedProtocol.h"
 #include "ConnectionId.h"
+#include "Client.h"
+#include "ClientCache.h"
+#include "Invocation.h"
 
 using namespace std;
 
@@ -33,9 +41,32 @@ public:
 			const UserGroupInformation& ticket, const Configuration& conf,
 			const SocketFactory& factory, int32_t rpcTimeout);
 
+	Object invoke(const string& method,const vector<Object>& args) {
+		bool logDebug = Logger::isDebugEnabled();
+		struct timeval startTime;
+		if (logDebug) {
+			gettimeofday(&startTime,NULL);
+		}
+		ObjectWritable value = client->call( Invocation(method, args), remoteId);
+		if (logDebug) {
+			struct timeval endTime;
+			gettimeofday(&endTime,NULL);
+			long callTime = 1000*(endTime.tv_sec-startTime.tv_sec)+(endTime.tv_usec-startTime.tv_usec);
+			LOG_DEBUG("Invoker","Call: " << method << " " << callTime);
+		}
+		return value.get();
+	}
+
+	/* close the IPC client that's responsible for this invoker's RPCs */
+	void close() {
+		if (!isClosed) {
+			isClosed = true;
+			ClientCache::CLIENTS.stopClient(client);
+		}
+	}
 private:
 	ConnectionId remoteId;
-//	Client client;
+	Client * client;
 	bool isClosed;
 
 };
@@ -69,6 +100,7 @@ namespace libhadoop {
 class RPC {
 
 public:
+
 	static auto_ptr<VersionedProtocol> getProxy(const string& protocol,
 			const int64_t clientVersion, const InetSocketAddress& addr,
 			const UserGroupInformation& ticket, const Configuration& conf,

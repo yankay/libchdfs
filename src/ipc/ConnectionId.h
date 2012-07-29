@@ -47,7 +47,25 @@ public:
 			const UserGroupInformation& ticket, const int32_t rpcTimeout,
 			const string& serverPrincipal, const int32_t maxIdleTime,
 			const int32_t maxRetries, const bool tcpNoDelay, const bool doPing,
-			const int32_t pingInterval);
+			const int32_t pingInterval) :
+				address(address), protocol(protocol), ticket(ticket), rpcTimeout(
+						rpcTimeout), serverPrincipal(serverPrincipal), maxIdleTime(
+						maxIdleTime), maxRetries(maxRetries), tcpNoDelay(tcpNoDelay), doPing(
+						doPing), pingInterval(pingInterval){
+
+	}
+
+//	ConnectionId::ConnectionId(const InetSocketAddress& address,
+//			const string& protocol, const UserGroupInformation& ticket,
+//			const int32_t rpcTimeout, const string& serverPrincipal,
+//			const int32_t maxIdleTime, const int32_t maxRetries,
+//			const bool tcpNoDelay, const bool doPing, const int32_t pingInterval) :
+//			address(address), protocol(protocol), ticket(ticket), rpcTimeout(
+//					rpcTimeout), serverPrincipal(serverPrincipal), maxIdleTime(
+//					maxIdleTime), maxRetries(maxRetries), tcpNoDelay(tcpNoDelay), doPing(
+//					doPing), pingInterval(pingInterval) {
+//	}
+
 
 	static ConnectionId getConnectionId(const InetSocketAddress& addr,
 			const string& protocol, const UserGroupInformation& ticket,

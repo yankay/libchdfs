@@ -38,8 +38,10 @@ extern int loglevel;
 class Logger {
 
 public:
-	enum LogLevel {
-	};
+
+	static bool isDebugEnabled(){
+		return loglevel<=DEBUG;
+	}
 
 
 	Logger(const string& name) :

@@ -13,6 +13,11 @@ using namespace std;
 namespace libhadoop {
 
 class SocketFactory {
+
+public:
+	static SocketFactory getDefault(){
+		return SocketFactory();
+	}
 };
 
 } /* namespace libhadoop */
