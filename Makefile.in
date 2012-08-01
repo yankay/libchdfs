@@ -9,6 +9,7 @@ LIBGTEST = libgtest.a
 LTLIBRARIES = libhadoop.so
 MAKEFILE_CONFS = configure config.status config.log autom4te.cache/ Makefile
 
+CONFIGURABLE_CLASS = conf/Configurable
 CONF_CLASS = conf/Configuration
 FILESYSTEM_CLASS = fs/FileSystem
 PATH_CLASS = fs/Path
@@ -17,7 +18,10 @@ FSCONSTANTSL_CLASS = hdfs/protocol/FSConstants
 DFSCLIENT_CLASS = hdfs/DFSClient
 DFSCONFIGKEYS_CLASS = hdfs/DFSConfigKeys
 SOCKETCACHE_CLASS = hdfs/SocketCache
+DATAINPUT_CLASS = io/DataInput
+DATAOUTPUT_CLASS = io/DataOutput
 OBJECTWRITABLE_CLASS = io/ObjectWritable
+WRITABLE_CLASS = io/Writable
 CLIENT_CLASS = ipc/Client
 CLIENTCACHE_CLASS = ipc/ClientCache
 CLIENTPROTOCOLRPC_CLASS = ipc/ClientProtocolRPC
@@ -38,11 +42,11 @@ JOINER_CLASS = util/Joiner
 LOGGER_CLASS = util/Logger
 STRING_UTILS_CLASS = util/StringUtils
 
-OBJECTS = src/$(CONF_CLASS).o \
+OBJECTS = src/$(CONFIGURABLE_CLASS).o src/$(CONF_CLASS).o \
 src/$(FILESYSTEM_CLASS).o src/$(PATH_CLASS).o \
 src/$(CLIENTPROTOCOL_CLASS).o src/$(FSCONSTANTSL_CLASS).o \
 src/$(DFSCLIENT_CLASS).o src/$(DFSCONFIGKEYS_CLASS).o src/$(SOCKETCACHE_CLASS).o \
-src/$(OBJECTWRITABLE_CLASS).o \
+src/$(DATAINPUT_CLASS).o src/$(DATAOUTPUT_CLASS).o src/$(OBJECTWRITABLE_CLASS).o src/$(WRITABLE_CLASS).o\
 src/$(CLIENT_CLASS).o src/$(CLIENTCACHE_CLASS).o src/$(CLIENTPROTOCOLRPC_CLASS).o src/$(CONNECTIONID_CLASS).o src/$(INVOCATION_CLASS).o src/$(RPC_CLASS).o src/$(VERSIONPROTOCOL_CLASS).o\
 src/$(OBJECT_CLASS).o \
 src/$(INETSOCKETADDRESS_CLASS).o src/$(NETUTILS_CLASS).o src/$(SOCKETFACTORY_CLASS).o src/$(URI_CLASS).o \
