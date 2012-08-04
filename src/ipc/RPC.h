@@ -54,7 +54,9 @@ public:
 			long callTime = 1000*(endTime.tv_sec-startTime.tv_sec)+(endTime.tv_usec-startTime.tv_usec);
 			LOG_DEBUG("Invoker","Call: " << method << " " << callTime);
 		}
-		return value.get();
+		//TODO
+		return Object();
+//		return value.get();
 	}
 
 	/* close the IPC client that's responsible for this invoker's RPCs */
