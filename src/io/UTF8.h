@@ -33,21 +33,26 @@ public:
 		readChars(bytes, buffer, nBytes);
 	}
 
-	static void readChars(int8_t bytes[], wstringstream& buffer, int32_t nBytes) {
-		int32_t i(0);
+	static void readChars(int8_t bytes[], wstringstream& buffer,
+			int32_t nBytes) {
+		int32_t i = 0;
+		int32_t f1 = 0x0000001F;
+		int32_t f3 = 0x0000003F;
+		int32_t f7 = 0x0000007F;
+		int32_t clean = 0x0000ffff;
 		while (i < nBytes) {
 			int8_t b = bytes[i++];
 			if ((b & 0x80) == 0) {
-				buffer.put((wchar_t) ((int32_t) b & 0x7F));
+				buffer.put((wchar_t) ((int16_t)((b & f7) & clean)));
 			} else if ((b & 0xE0) != 0xE0) {
 				buffer.put(
-						(wchar_t) ((((int32_t) b & 0x1F) << 6)
-								| ((int32_t) bytes[i++] & 0x3F)));
+						(wchar_t) ((int16_t)(
+								(((b & f1) << 6) | (bytes[i++] & f3))) & clean));
 			} else {
-				buffer.put(
-						(wchar_t) ((((int32_t) b & 0x0F) << 12)
-								| (((int32_t) bytes[i++] & 0x3F) << 6)
-								| ((int32_t) bytes[i++] & 0x3F)));
+				int32_t a = (b & 0x0F) << 12;
+				int32_t b = (bytes[i++] & f3) << 6;
+				int32_t c = bytes[i++] & f3;
+				buffer.put((wchar_t) ((a | b | c) & clean));
 			}
 		}
 	}
