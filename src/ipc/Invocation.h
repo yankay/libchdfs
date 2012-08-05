@@ -10,15 +10,18 @@
 
 #include <string>
 #include <vector>
+#include <tr1/memory>
+
 #include "lang/Object.h"
 
 using namespace std;
+using namespace std::tr1;
 
 namespace libhadoop {
 
 class Invocation {
 public:
-	Invocation(const string& method,const vector<Object>& parameters);
+	Invocation(const string& method,const vector< shared_ptr<Object> >& parameters);
 };
 
 } /* namespace libhadoop */

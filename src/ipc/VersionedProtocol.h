@@ -18,8 +18,12 @@ namespace libhadoop {
 class VersionedProtocol {
 
 public:
-	virtual int64_t getProtocolVersion(const string& protocol, int64_t clientVersion);
-	virtual ~VersionedProtocol();
+	virtual int64_t getProtocolVersion(const string& protocol, int64_t clientVersion){
+		//TODO
+	}
+	virtual ~VersionedProtocol(){
+		//TODO
+	}
 };
 
 } /* namespace libhadoop */

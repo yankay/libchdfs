@@ -37,12 +37,20 @@ public:
 
 	ObjectWritable call(const Invocation& param, const ConnectionId& remoteId);
 
-	void incCount();
-	void decCount();
+	void incCount(){
+		//TODO
+	}
+	void decCount(){
+		//TODO
+	}
 
-	bool isZeroReference();
+	bool isZeroReference(){
+		//TODO
+	}
 
-	void stop();
+	void stop(){
+		//TODO
+	}
 
 	SocketFactory getSocketFactory();
 

@@ -16,7 +16,7 @@ using namespace std;
 namespace libhadoop {
 
 class DataInput {
-
+public:
 	virtual void readFully(int8_t b[], int32_t len);
 
 	virtual void readFully(int8_t b[], int32_t off, int32_t len);

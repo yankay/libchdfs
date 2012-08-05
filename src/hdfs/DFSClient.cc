@@ -38,7 +38,7 @@ DFSClient::DFSClient(const InetSocketAddress& nameNodeAddr,
 }
 
 void DFSClient::init(const InetSocketAddress& nameNodeAddr,
-		auto_ptr<ClientProtocol> rpcNamenode, const Configuration& conf,
+		shared_ptr<ClientProtocol> rpcNamenode, const Configuration& conf,
 		const FileSystemStatistics& stats) {
 	this->stats = stats;
 	socketTimeout = conf.getInt("dfs.socket.timeout",
@@ -68,7 +68,7 @@ void DFSClient::init(const InetSocketAddress& nameNodeAddr,
 					DFSConfigKeys::DFS_CLIENT_SOCKET_CACHE_CAPACITY_DEFAULT));
 
 	this->rpcNamenode = rpcNamenode;
-	this->namenode = createNamenode(*rpcNamenode);
+	this->namenode = createNamenode(rpcNamenode);
 
 	// read directly from the block file if configured.
 	this->shortCircuitLocalReads = conf.getBoolean(
@@ -99,7 +99,7 @@ int32_t DFSClient::getMaxBlockAcquireFailures(const Configuration& conf) {
 DFSClient::~DFSClient() {
 }
 
-auto_ptr<ClientProtocol> DFSClient::createRPCNamenode(
+shared_ptr<ClientProtocol> DFSClient::createRPCNamenode(
 		const InetSocketAddress& nameNodeAddr, const Configuration& conf,
 		const UserGroupInformation& ugi) {
 	auto_ptr<VersionedProtocol> vp = RPC::getProxy("ClientProtocol",
@@ -107,11 +107,11 @@ auto_ptr<ClientProtocol> DFSClient::createRPCNamenode(
 			NetUtils::getSocketFactory(conf, "ClientProtocol"));
 	ClientProtocol* p = dynamic_cast<ClientProtocol*>(vp.get());
 	vp.release();
-	return auto_ptr < ClientProtocol > (p);
+	return shared_ptr < ClientProtocol > (p);
 }
 
-ClientProtocol* DFSClient::createNamenode(ClientProtocol& rpcNamenode) { //todo
-	return &rpcNamenode;
+shared_ptr<ClientProtocol> DFSClient::createNamenode(shared_ptr<ClientProtocol> rpcNamenode) { //todo
+	return rpcNamenode;
 }
 
 vector<InetSocketAddress> DFSClient::getLocalInterfaceAddrs(

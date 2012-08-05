@@ -16,10 +16,11 @@
 
 #include "lang/Object.h"
 #include "lang/Class.h"
-#include "io/Writable.h"
-#include "io/DataInput.h"
-#include "io/DataOutput.h"
 #include "conf/Configurable.h"
+#include "NullInstance.h"
+#include "Writable.h"
+#include "DataInput.h"
+#include "DataOutput.h"
 
 using namespace std;
 using namespace std::tr1;
@@ -29,49 +30,49 @@ namespace libhadoop {
 class ObjectWritable: public Writable, public Configurable {
 public:
 
-	ObjectWritable(shared_ptr<Object> instance) {
-//		set(instance);
+	ObjectWritable(shared_ptr<Object>& instance) :
+			declaredClass(const_cast<type_info*>(&(typeid(*instance.get())))), instance(
+					instance) {
 	}
 
-	ObjectWritable(const Class& declaredClass, shared_ptr<Object> instance) :
+	ObjectWritable(const Class& declaredClass, shared_ptr<Object>& instance) :
 			declaredClass(declaredClass), instance(instance) {
 	}
 
-	void set(shared_ptr<Object> instance) {
-//		declaredClass = const_cast<type_info*>(&(typeid(*instance.get())));
+//	void set(shared_ptr<Object> instance) {
+//		Class c();
+//		this->declaredClass = c;
 //		this->instance = instance;
+//	}
+
+	shared_ptr<Object> get() {
+		return instance;
 	}
 
-	shared_ptr<Object> get();
-//			{
-//		return instance;
-//	}
+	const Class getDeclaredClass() {
+		return declaredClass;
+	}
 
-	const Class getDeclaredClass();
-//	{
-//		return declaredClass;
-//	}
-
-	 string toString() {
+	string toString() {
 		stringstream ss;
-//		ss << "OW[class=" << declaredClass->name() << ",value=" << "instance"
-//				<< "]";
+		ss << "OW[class=" << declaredClass.name() << ",value=" << "instance"
+				<< "]";
 		return ss.str();
 	}
 
 	virtual void write(DataOutput& out) {
-//		ObjectWritable::writeObject(out, instance, *declaredClass, conf);
+		ObjectWritable::writeObject(out, instance, declaredClass, conf);
 	}
 
 	virtual void readFields(DataInput& in) {
-//		ObjectWritable::readObject(in, *this, this->conf);
+		ObjectWritable::readObject(in, *this, this->conf);
 	}
 
-	static void writeObject(DataOutput& out, const Object& instance,
-			const type_info& declaredClass, const Configuration& conf);
+	static void writeObject(DataOutput& out, shared_ptr<Object> instance,
+			Class& declaredClass, const Configuration& conf);
 
-	static Object readObject(DataInput& in, ObjectWritable& objectWritable,
-			const Configuration& conf);
+	static shared_ptr<Object> readObject(DataInput& in,
+			ObjectWritable& objectWritable, const Configuration& conf);
 //
 	void setConf(const Configuration& conf) {
 		this->conf = conf;

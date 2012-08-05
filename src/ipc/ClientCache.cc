@@ -8,5 +8,6 @@
 #include "ClientCache.h"
 
 namespace libhadoop {
+	ClientCache ClientCache::CLIENTS;
 
 } /* namespace libhadoop */

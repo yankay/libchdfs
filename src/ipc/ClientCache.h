@@ -14,14 +14,16 @@
 #include "ipc/Client.h"
 #include "conf/Configuration.h"
 #include "net/SocketFactory.h"
+#include <tr1/memory>
 
 using namespace std;
+using namespace std::tr1;
 
 namespace libhadoop {
 
 class ClientCache {
 private:
-	auto_ptr<Client> client_p;
+	shared_ptr<Client> client_p;
 public:
 
 	static ClientCache CLIENTS;
@@ -33,19 +35,19 @@ public:
 	 * @param conf Configuration
 	 * @return an IPC client
 	 */
-	Client* getClient(const Configuration& conf, const SocketFactory& factory) {
+	shared_ptr<Client> getClient(const Configuration& conf, const SocketFactory& factory) {
 		// Construct & cache client.  The configuration is only used for timeout,
 		// and Clients have connection pools.  So we can either (a) lose some
 		// connection pooling and leak sockets, or (b) use the same timeout for all
 		// configurations.  Since the IPC is usually intended globally, not
 		// per-job, we choose (a).
 		if (client_p.get() == NULL) {
-			auto_ptr<Client> t(new Client("ObjectWritable", conf, factory));
+			shared_ptr<Client> t(new Client("ObjectWritable", conf, factory));
 			client_p = t;
 		} else {
 			client_p->incCount();
 		}
-		return client_p.get();
+		return client_p;
 	}
 
 	/**
@@ -55,7 +57,7 @@ public:
 	 * @param conf Configuration
 	 * @return an IPC client
 	 */
-	Client* getClient(const Configuration& conf) {
+	shared_ptr<Client> getClient(const Configuration& conf) {
 		return getClient(conf, SocketFactory::getDefault());
 	}
 
@@ -63,14 +65,14 @@ public:
 	 * Stop a RPC client connection
 	 * A RPC client is closed only when its reference count becomes zero.
 	 */
-	void stopClient(Client* client) {
+	void stopClient(shared_ptr<Client>& client) {
 		client->decCount();
 		if (client->isZeroReference()) {
 			client->stop();
 		}
 		if (client->isZeroReference()) {
-			if (client == client_p.get())
-				client_p.reset(NULL);
+			if (client == client_p)
+				client_p.reset();
 		}
 	}
 

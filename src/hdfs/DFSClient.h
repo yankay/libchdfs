@@ -14,6 +14,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <memory>
+#include <tr1/memory>
 #include <exception>
 
 #include "conf/Configuration.h"
@@ -32,6 +33,7 @@
 #include "SocketCache.h"
 
 using namespace std;
+using namespace std::tr1;
 
 namespace libhadoop {
 
@@ -41,7 +43,7 @@ public:
 	static const int32_t MAX_BLOCK_ACQUIRE_FAILURES;
 	static const int64_t DEFAULT_BLOCK_SIZE;
 
-	ClientProtocol* namenode;
+	shared_ptr<ClientProtocol> namenode;
 	UserGroupInformation& ugi;
 	bool clientRunning;
 	string clientName;
@@ -61,7 +63,7 @@ public:
 	virtual ~DFSClient();
 
 private:
-	auto_ptr<ClientProtocol> rpcNamenode;
+	shared_ptr<ClientProtocol> rpcNamenode;
 
 	Configuration conf;
 	FileSystemStatistics stats;
@@ -80,16 +82,16 @@ private:
 	DFSClient();
 
 	void init(const InetSocketAddress& nameNodeAddr,
-			auto_ptr<ClientProtocol> rpcNamenode, const Configuration& conf,
+			shared_ptr<ClientProtocol> rpcNamenode, const Configuration& conf,
 			const FileSystemStatistics& stats);
 
 	static int32_t getMaxBlockAcquireFailures(const Configuration& conf);
 
-	static auto_ptr<ClientProtocol> createRPCNamenode(
+	static shared_ptr<ClientProtocol> createRPCNamenode(
 			const InetSocketAddress& nameNodeAddr, const Configuration& conf,
 			const UserGroupInformation& ugi);
 
-	static ClientProtocol* createNamenode(ClientProtocol& rpcNamenode);
+	static shared_ptr<ClientProtocol> createNamenode(shared_ptr<ClientProtocol> rpcNamenode);
 
 	static vector<InetSocketAddress> getLocalInterfaceAddrs(
 			const vector<string>& interfaceNames);

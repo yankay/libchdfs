@@ -14,7 +14,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <vector>
-
+#include <tr1/memory>
 #include <sys/time.h>
 
 #include "conf/Configuration.h"
@@ -30,48 +30,13 @@
 #include "Client.h"
 #include "ClientCache.h"
 #include "Invocation.h"
+#include "Invoker.h"
 
 using namespace std;
+using namespace std::tr1;
 
 namespace libhadoop {
 
-class Invoker {
-public:
-	Invoker(const string& protocol, const InetSocketAddress& address,
-			const UserGroupInformation& ticket, const Configuration& conf,
-			const SocketFactory& factory, int32_t rpcTimeout);
-
-	Object invoke(const string& method,const vector<Object>& args) {
-		bool logDebug = Logger::isDebugEnabled();
-		struct timeval startTime;
-		if (logDebug) {
-			gettimeofday(&startTime,NULL);
-		}
-		ObjectWritable value = client->call( Invocation(method, args), remoteId);
-		if (logDebug) {
-			struct timeval endTime;
-			gettimeofday(&endTime,NULL);
-			long callTime = 1000*(endTime.tv_sec-startTime.tv_sec)+(endTime.tv_usec-startTime.tv_usec);
-			LOG_DEBUG("Invoker","Call: " << method << " " << callTime);
-		}
-		//TODO
-		return Object();
-//		return value.get();
-	}
-
-	/* close the IPC client that's responsible for this invoker's RPCs */
-	void close() {
-		if (!isClosed) {
-			isClosed = true;
-			ClientCache::CLIENTS.stopClient(client);
-		}
-	}
-private:
-	ConnectionId remoteId;
-	Client * client;
-	bool isClosed;
-
-};
 
 /**
  * A version mismatch for the RPC protocol.
@@ -79,8 +44,13 @@ private:
 class VersionMismatch: public std::exception {
 public:
 	VersionMismatch(const string& interfaceName, int64_t clientVersion,
-			int64_t serverVersion);
-	virtual ~VersionMismatch() throw ();
+			int64_t serverVersion){
+		//TODO
+	}
+
+	virtual ~VersionMismatch() throw (){
+//TODO
+	}
 private:
 	string interfaceName;
 	int64_t clientVersion;

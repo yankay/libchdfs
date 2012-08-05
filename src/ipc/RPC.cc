@@ -9,14 +9,6 @@
 
 namespace libhadoop {
 
-Invoker::Invoker(const string& protocol, const InetSocketAddress& address,
-		const UserGroupInformation& ticket, const Configuration& conf,
-		const SocketFactory& factory, int32_t rpcTimeout) :
-		remoteId(
-				ConnectionId::getConnectionId(address, protocol, ticket,
-						rpcTimeout, conf)), client(
-				ClientCache::CLIENTS.getClient(conf, factory)), isClosed(false) {
-}
 
 auto_ptr<VersionedProtocol> RPC::newProxyInstance(const string& protocol,
 		const Invoker& invoker) {

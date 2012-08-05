@@ -9,12 +9,27 @@
 #define CLASS_H_
 
 #include <stdio.h>
+#include <memory>
+#include <string>
+#include <typeinfo>
+
+using namespace std;
 
 namespace libhadoop {
 
 class Class {
+
+public:
+
+	Class(type_info* declaredClass) :
+			declaredClass(declaredClass) {
+	}
+
+	string name() ;
 private:
-//	type_info* declaredClass;
+	Class();
+
+	type_info* declaredClass;
 };
 
 } /* namespace libhadoop */

@@ -11,9 +11,11 @@
 #include "DataOutput.h"
 #include "DataInput.h"
 
+#include "lang/Object.h"
+
 namespace libhadoop {
 
-class Writable {
+class Writable :public Object{
 public:
 	virtual void write(DataOutput& out) = 0;
 

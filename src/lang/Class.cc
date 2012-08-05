@@ -8,5 +8,8 @@
 #include "Class.h"
 
 namespace libhadoop {
+string Class::name() {
+	return declaredClass->name();
+}
 
 } /* namespace libhadoop */

@@ -18,14 +18,22 @@ using namespace std;
 class ClientProtocol: public VersionedProtocol {
 
 public:
-	ClientProtocol();
-	virtual ~ClientProtocol();
+	ClientProtocol(){
+		//TODO
+	}
+	virtual ~ClientProtocol(){
+//TODO
+	}
 
 	static const int64_t versionID;
 
-	virtual bool delete_m(const string& src);
+	virtual bool delete_m(const string& src){
+		//TODO
+	}
 
-	virtual bool delete_m(const string& src, bool recursive);
+	virtual bool delete_m(const string& src, bool recursive){
+//TODO
+	}
 
 };
 
