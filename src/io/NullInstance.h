@@ -8,39 +8,39 @@
 #ifndef NULLINSTANCE_H_
 #define NULLINSTANCE_H_
 
+#include <string>
+
 #include "lang/Object.h"
 #include "lang/Class.h"
 #include "conf/Configurable.h"
 #include "conf/Configured.h"
+#include "UTF8.h"
 #include "Writable.h"
+
+using namespace std;
 
 namespace libhadoop {
 class NullInstance: public Configured, public Writable {
 public:
-	NullInstance(const Class& declaredClass, const Configuration& conf) :
+	NullInstance(const string& declaredClass, const Configuration& conf) :
 			Configured(conf), declaredClass(declaredClass) {
 
 	}
 
-	virtual void write(DataOutput& out) {
-
+	void write(DataOutput& out) {
+	      UTF8::writeString(out, declaredClass);
 	}
 
-	virtual void readFields(DataInput& in) {
-//		String className = UTF8.readString(in);
-//		declaredClass = PRIMITIVE_NAMES.get(className);
-//		if (declaredClass == null) {
-//			try {
-//				declaredClass = getConf().getClassByName(className);
-//			} catch (ClassNotFoundException e) {
-//				throw new RuntimeException(e.toString());
-//			}
-//		}
-
+	void readFields(DataInput& in) {
+		wstring className = UTF8::readString(in);
+		if (declaredClass.empty()) {
+			string s(className.begin(), className.end());
+			declaredClass = s;
+		}
 	}
 
 private:
-	Class declaredClass;
+	string declaredClass;
 
 };
 

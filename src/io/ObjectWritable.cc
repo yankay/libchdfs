@@ -11,7 +11,7 @@ namespace libhadoop {
 void ObjectWritable::writeObject(DataOutput& out, shared_ptr<Object> instance,
 		Class& declaredClass, const Configuration& conf) {
 	if (!instance) {                       // null
-		instance.reset(new NullInstance(declaredClass, conf));
+		instance.reset(new NullInstance(declaredClass.name(), conf));
 		declaredClass = Class(const_cast<type_info*>(&typeid(Writable)));
 	}
 

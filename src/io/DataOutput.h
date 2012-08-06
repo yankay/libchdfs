@@ -16,6 +16,7 @@ using namespace std;
 namespace libhadoop {
 
 class DataOutput {
+public:
 	virtual void write(int32_t b);
 
 	virtual void write(int8_t b[], int32_t len);
